@@ -1,0 +1,1 @@
+<h1>Your New Project Installation is Ready</h1>

@@ -1,0 +1,376 @@
+body {
+    background: #333;
+}
+h1 {
+}
+h2 {
+    color: #006DBA;
+}
+h3 {
+    color: #666666;
+}
+h4 {
+}
+h5 {
+    color: #444;
+}
+h6 {
+    color: #21A3FF;
+}
+p {
+    color: #333;
+}
+a {
+    color: #006DBA;
+}
+a:hover {
+    color: #006ACD;
+}
+a:active {
+    color: #0BAF7E;
+}
+ul, ol {
+    color: #333;
+}
+
+#topWrapper {
+    padding: 1em 1em 1.5em 1em;
+    background: -moz-linear-gradient(center top, #FFF 8px, #F2F2F2 24px, #F2F2F2 100%) repeat scroll 0 0 #F2F2F2;
+}
+    #header {
+        padding: 0 0 0 0;
+        overflow: auto;
+    }
+        #header h1 {
+            float: left;
+        }
+        #header .projectLogo {
+            float: left;
+            margin: 0 .4em 0 0;
+        }
+        #header #navigation {
+            float: right;
+            list-style: none;
+        }
+            #header #navigation a {
+                text-decoration: none;
+                display: block;
+                background: #FFF;
+                padding: .25em .75em;
+                -moz-border-radius: 5px 5px 5px 5px;
+                border-radius: 5px 5px 5px 5px;
+                border: 1px solid #CCC;
+            }
+    #contentWrapper {
+        clear: both;
+        -moz-border-radius: 5px 5px 5px 5px;
+        border-radius: 5px 5px 5px 5px;
+        border: 1px solid #CCC;
+        overflow: auto;
+        padding: .75em;
+        margin: -.3em 0 0 0;
+        background: #FFF;
+    }
+        #sideNavigation {
+            float: left;
+            width: 200px;
+            margin: 0;
+            list-style: none;
+        }
+            .sideNavigationArrow {
+                background: url(../project/images/control/side-navigation-arrow-right.png) no-repeat;
+                clear: both;
+                cursor: pointer;
+                display: block;
+                float: left;
+                width: 26px;
+                height: 22px;
+            }
+                .sideNavigationArrow:hover {
+                    background: url(../project/images/control/side-navigation-arrow-right-highlight.png) no-repeat;
+                }
+                .active .sideNavigationArrow:hover {
+                    background: url(../project/images/control/side-navigation-arrow-right-active-highlight.png) no-repeat;
+                }
+            .sideNavigationArrow.expanded {
+                background: url(../project/images/control/side-navigation-arrow-down.png) no-repeat;
+            }
+                .sideNavigationArrow.expanded:hover {
+                    background: url(../project/images/control/side-navigation-arrow-down-highlight.png) no-repeat;
+                }
+                .active .sideNavigationArrow.expanded:hover {
+                    background: url(../project/images/control/side-navigation-arrow-down-active-highlight.png) no-repeat;
+                }
+            #sideNavigation ul {
+                margin: 0;
+                list-style: none;
+            }
+            #sideNavigation a {
+                text-decoration: none;
+                display: block;
+                color: black;
+            }
+                #sideNavigation li div.link {
+                    -moz-border-radius:5px 5px 5px 5px;
+                    border-radius:5px 5px 5px 5px;
+                    -moz-box-shadow:0 1px 3px rgba(0, 0, 0, 0.05);
+                    box-shadow:0 1px 3px rgba(0, 0, 0, 0.05);
+                    background: -moz-linear-gradient(center top, #FFF 0%, #F9F9F9 50%, #F4F4F4 100%) repeat scroll 0 0 transparent;
+                    border-color:#DEDEDE #BBBBBB #BFBFBF #DEDEDE;
+                    border-style:solid;
+                    border-width:1px;
+                    color:#000000;
+                    display:block;
+                    font-weight:bold;
+                    margin: 0 0 8px;
+                    font-size: 12px;
+                }
+                #sideNavigation li div.link:hover, #sideNavigation li div.link.active {
+                    border: 1px solid #006DBA;
+                }
+                    #sideNavigation li div.link.active {
+                        background: -moz-linear-gradient(center top, #0098FF 0%, #006DBA 50%, #006DBA 100%) repeat scroll 0 0 transparent;
+                    }
+                        #sideNavigation li div.link.active a {
+                            color: #FFF;
+                        }
+                #sideNavigation li div.link.secondLevel {
+                    margin-left: 1em;
+                }
+                #sideNavigation li div.link.thirdLevel {
+                    margin-left: 2em;
+                }
+                #sideNavigation li div.link.fourthLevel {
+                    margin-left: 3em;
+                }
+        #trail {
+            list-style: none;
+            overflow: auto;
+        }
+            #trail li {
+                float: left;
+            }
+                #trail li a {
+                    text-decoration: none;
+                    border-bottom: 1px solid #006DBA;
+                }
+        #content {
+            margin-left: 216px;
+            padding: 0 0 1em 0;
+        }
+            #content h1 {
+                line-height: 1em;
+                padding: 0 0 .25em 0;
+                border-bottom: 1px solid #CCC;
+            }
+            
+            .buttonList {
+                list-style: none;
+                overflow: auto;
+                padding: 0 0 .25em 0;
+            }
+                .buttonList li {
+                    float: left;
+                    margin: 0 .5em 0 0;
+                }
+
+            .buttonLink {
+                border: 1px solid #CCC;
+                -moz-border-radius: 5px;
+                border-radius: 5px;
+                padding: .25em .6em .25em 1.8em;
+                text-decoration: none;
+                background: #F3F3F3;
+                color: #000;
+
+            }
+                .buttonLink:hover {
+                    color: #000;
+                    border: 1px solid #999;
+                }
+                .buttonLink.lock {
+                    background: #F3F3F3 url(../project/images/icons/lock.png) no-repeat 2px 50%;
+                }
+                .buttonLink.plusSquareGrey {
+                    background: #F3F3F3 url(../project/images/icons/plus-square-grey.png) no-repeat 2px 50%;
+                }
+                .buttonLink.plusDotGreen {
+                    background: #F3F3F3 url(../project/images/icons/plus-dot-green.png) no-repeat 2px 50%;
+                }
+                .buttonLink.minusDotRed {
+                    background: #F3F3F3 url(../project/images/icons/minus-dot-red.png) no-repeat 2px 50%;
+                }
+                .buttonLink.notepad {
+                    background: #F3F3F3 url(../project/images/icons/notepad.png) no-repeat 2px 50%;
+                }
+                .buttonLink.refreshVertical {
+                    background: #F3F3F3 url(../project/images/icons/refresh-vertical.png) no-repeat 2px 50%;
+                }
+                .buttonLink.clockBlueArrowGreen {
+                    background: #F3F3F3 url(../project/images/icons/clock-blue-arrow-green.png) no-repeat 2px 50%;
+                }
+                .buttonLink.cog {
+                    background: #F3F3F3 url(../project/images/icons/cog.png) no-repeat 2px 50%;
+                }
+                .buttonLink.database {
+                    background: #F3F3F3 url(../project/images/icons/database.png) no-repeat 2px 50%;
+                }
+                .buttonLink.minusSquareGrey {
+                    background: #F3F3F3 url(../project/images/icons/minus-square-grey.png) no-repeat 2px 50%;
+                }
+                .buttonLink.magnifyingGlass {
+                    background: #F3F3F3 url(../project/images/icons/magnifying-glass.png) no-repeat 2px 50%;
+                }
+            .statusColumn {
+                width: 16px;
+                padding: .2em;
+            }
+            .statusColumn a {
+                display: block;
+                width: 16px;
+                height: 16px;
+            }
+            .statusDotCheckGreen {
+                background: url(../project/images/icons/dot-check-green.png) no-repeat 0 0;
+            }
+            .statusDotGreen {
+                background: url(../project/images/icons/dot-green.png) no-repeat 0 0;
+            }
+            .statusDotBlue {
+                background: url(../project/images/icons/dot-blue.png) no-repeat 0 0;
+            }
+            .statusDotCustomGreen {
+                background: url(../project/images/icons/dot-custom-green.png) no-repeat 0 0;
+            }
+            .statusDotCustomBlue {
+                background: url(../project/images/icons/dot-custom-blue.png) no-repeat 0 0;
+            }
+            .statusDotRed {
+                background: url(../project/images/icons/dot-red.png) no-repeat 0 0;
+            }
+
+            .pagination li {
+                float: left;
+                margin: 1.25em .25em .5em 0;
+                display: block;
+            }
+                .pagination li a {
+                    padding: .35em .5em;
+                    border: 1px solid #CCC;
+                    -moz-border-radius: 2px;
+                    border-radius: 2px;
+                    text-decoration: none;
+                    color: #333;
+                    background: -moz-linear-gradient(center top, #FFFFFF 0%, #E9E9E9 50%, #EEEEEE 100%) repeat scroll 0 0 transparent;
+                }
+                .pagination li a:hover {
+                    border: 1px solid #999;
+                }
+
+            .searchInput {
+                border: 1px solid #CCC;
+                -moz-border-radius: 5px;
+                -moz-box-shadow: 0 0 .2em #CCC;
+                font-size: 1em;
+                margin: 0 .5em 0 0;
+                width: 12em;
+            }
+
+            table {
+                min-width: 640px;
+            }
+            table thead tr, table tfoot tr {
+                border: 1px solid #CCC;
+            }
+            table thead tr td, table tfoot tr td {
+                border: none;
+                padding: .25em 1em .25em .25em;
+                color: #222;
+            }
+            table tbody tr {
+                border: 1px solid #CCC;
+            }
+            table tbody tr td {
+                border: none;
+                padding: .2em 1em .2em .25em;
+            }
+            thead {
+                background: -moz-linear-gradient(center top, #FFFFFF 0%, #E9E9E9 50%, #EEEEEE 100%) repeat scroll 0 0 transparent;
+            }
+            tfoot {
+                background: -moz-linear-gradient(center bottom, #FFFFFF 0%, #E9E9E9 50%, #EEEEEE 100%) repeat scroll 0 0 transparent;
+            }
+
+            .moduleList {
+                list-style: none;
+                width: 600px;
+            }
+                .moduleList li {
+                    clear: right;
+                }
+                .moduleList ul {
+                    list-style: none;
+                    float: right;
+                    clear: right;
+                }
+                .moduleList ul li {
+                    font-size: 1em;
+                    clear: none;
+                    float: left;
+                    margin-left: 1em;
+                }
+
+            .routes {
+                font-size: 16px;
+                margin-left: .5em;
+                list-style: none;
+            }
+                .routes .routeTitle {
+                    margin: 0 0 .5em 0;
+                }
+                .routes ul {
+                    font-size: 16px;
+                    margin-left: 1em;
+                    list-style: none;
+                }
+                .routes ul.routeControls {
+                    position: absolute;
+                    margin: 0;
+                    background: #F3F3F3;
+                    border: 1px solid #999;
+                    -moz-border-radius: 5px;
+                }
+                    .routes ul.routeControls li {
+                        width: 104px;
+                    }
+                        .routes ul.routeControls .buttonLink {
+                            border: none;
+                            -moz-border-radius: 0;
+                            display: block;
+                            padding: 0 0 0 1.8em;
+                        }
+                        .routes ul.routeControls .buttonLink:hover {
+                            background-color: #DDD;
+                        }
+
+            .editRouteControls {
+                list-style: none;
+                overflow: auto;
+                padding: .5em 0 1em 0;
+            }
+                .editRouteControls li {
+                    float: left;
+                    margin-right: .5em;
+                }
+
+
+
+#footer {
+    border-top: 3px solid #006DBA;
+    clear: both;
+    color: #FFF;
+    padding: 1em 1.5em;
+}
+    #footer a {
+        color: #FFF;
+    }

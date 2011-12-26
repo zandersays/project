@@ -1,0 +1,83 @@
+model generation
+
+project models
+  these have code above and beyond the schema that needs to be injected to any models that are generated with a matching name (eg., user)
+
+custom code
+  2 classes in one file?
+
+model synchronization
+
+creating models in project and pushing them to db?
+creating models in db and sucking into project
+
+
+abstract or weird queries - run all the time with reports
+
+// this should return an associate array
+$result = Database::newQuery('pagemass', 'SELECT table1.field1 FROM a1,a2,b WHERE a1.id = a2.id AND b.name = 'bacon');
+
+// jacked up where clause on a model read
+
+$session = Session::read($key, $value);
+
+
+user
+user_login_history
+
+I want to see how many login attempts a user have been tried against a username in the last period of time
+
+SELECT * FROM user_login_history, user WHERE user.id = user_login_history.user_id AND time_added < '2010-09-09 00:00:00' AND time_added > '2010-08-09 00:00:00'
+
+$User->getUserLoginHistory()->Where('2010-09-09 00:00:00' AND time_added > '2010-08-09 00:00:00')->Execute();
+
+
+
+I want to paginate through all of the users
+
+SELECT * FROM user LIMIT 1, 10
+SELECT * FROM user LIMIT 10, 20
+SELECT * FROM user LIMIT 20, 30
+
+UserList::read()->Limit(1, 10)->Execute();
+UserList::read()->Limit(10, 20)->Execute();
+UserList::read()->Limit(20, 30)->Execute();
+
+
+I want to read out all of the permissions a user has for their account
+
+SELECT * FROM user_account_permission WHERE user_account_permission.user_id = 10
+
+$User->getAccountPermissions()->execute()
+
+
+
+I want to store a new solution provider in the database
+
+INSERT INTO solution_provider (name) VALUES ('kam')
+
+$sp = new SolutionProvider(kam);
+$sp->save();
+
+$sp = new SolutionProvider();
+$sp->setName('kam');
+$sp->save(true);
+
+
+
+
+
+I want to sum all of a users transactions in the last time period
+
+
+SELECT SUM(transaction_amount) FROM account_transaction where account_transaction.account_id = 30
+
+
+$Account->count('transaction_amount')->where('time > now()');
+$Account->sum('transaction_amount')->where('time > now()');
+
+
+
+I want to receive a giant-A list of different data points from atlas and store them in the database
+
+We'll talk about this biatch

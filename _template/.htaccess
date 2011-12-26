@@ -1,0 +1,24 @@
+# Turn on URL rewriting
+RewriteEngine On
+RewriteBase /
+
+# Force directory requests to terminate with a forward slash
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{HTTPS}s ^on(s)|off
+RewriteRule [^/]$ http%1://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L]
+
+# Favicon and robots.txt requests are directly
+RewriteRule robots.txt views/robots.txt [L]
+RewriteRule favicon.ico views/images/favicon.ico [L]
+
+# All image, script, and style requests are directly read
+RewriteCond %{REQUEST_URI} !(\.php)
+RewriteRule ^[instanceAccessPath]images/(.*)$ [instanceAccessPath]views/images/$1?%{QUERY_STRING} [L]
+RewriteRule ^[instanceAccessPath]scripts/(.*)$ [instanceAccessPath]views/scripts/$1?%{QUERY_STRING} [L]
+RewriteRule ^[instanceAccessPath]styles/(.*)$ [instanceAccessPath]views/styles/$1?%{QUERY_STRING} [L]
+
+# All requests are routed through project
+RewriteCond %{REQUEST_URI} !([instanceAccessPath]views/images|[instanceAccessPath]views/scripts|[instanceAccessPath]views/styles)
+RewriteCond %{REQUEST_URI} ![instanceAccessPath]project/unit-tests
+RewriteCond %{REQUEST_URI} ![instanceAccessPath]project/index.php
+RewriteRule ^(.*)$ [instanceAccessPath]project/index.php?project=/$1&%{QUERY_STRING} [L]

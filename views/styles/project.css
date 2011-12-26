@@ -1,0 +1,232 @@
+html, body, header, nav, footer, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, input, select, textarea, button {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: normal;
+    font-style: inherit;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+:focus {
+    outline: 0;
+}
+body { 
+    line-height: 1;
+    color: black;
+    background: white;
+}
+ol, ul { 
+    list-style: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+caption, th, td {
+    text-align: left;
+    font-weight: normal;
+    font-size: 100%;
+}
+blockquote:before, blockquote:after, q:before, q:after {
+    content: "";
+}
+blockquote, q {
+    quotes: "" "";
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5em;
+}
+h1, h2, h3, h4, h5, h6 {
+    line-height: 1.5em;
+    margin-bottom: .5em;
+}
+h1 {
+    font-size: 1.6em;
+}
+h2 {
+    font-size: 1.4em;
+}
+h3 {
+    font-size: 1.2em;
+}
+h4 {
+    font-size: 1.1em;
+}
+h5 {
+    font-size: .85em;
+    font-weight: bold;
+}
+h6 {
+    font-size: 1em;
+}
+p {
+    font-size: .8em;
+    line-height: 1.5em;
+    margin-bottom: 1em;
+}
+strong {
+    font-weight: bold;
+}
+a {
+    cursor: pointer;
+    text-decoration: underline;
+}
+a:hover {
+}
+a:active {
+}
+ul, ol {
+    margin-bottom: .5em;
+}
+ul {
+    list-style-type: disc;
+}
+ol {
+    list-style-type: decimal;
+}
+li {
+    font-size: .8em;
+}
+table {
+    border-collapse: collapse;
+}
+td {
+    font-size: .8em;
+}
+thead tr td, tfoot tr td {
+    font-weight: bold;
+    border: 1px solid #333;
+}
+tbody tr td {
+    border: 1px solid #333;
+}
+input, select, textarea {
+    border: 1px solid #AAA;
+    font-size: .8em;
+    padding: 3px 3px;
+}
+textarea {
+    font-family: Arial, sans-serif;
+}
+
+/* Dialog */
+.dialogModalOverlay {
+    position: absolute;
+    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    filter: alpha(opacity: 50);
+    -moz-opacity: .5;
+    -khtml-opacity: .5;
+    opacity: .5;
+    background-color: #000;
+}
+.dialogWrapper {
+    position: absolute;
+    z-index: 1000000;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    font-family: Arial;
+}
+    .dialogWrapper .dialog {
+        overflow: visible;
+        max-width: auto;
+        margin: 0 auto;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        box-shadow: 2px 12px 30px #333;
+        background: #FFF;
+    }
+        .dialogWrapper .dialog .dialogHeader .closeButton {
+            cursor: pointer;
+        }
+        .dialogWrapper .dialog .dialogFooter .closeButton {
+            cursor: pointer;
+        }
+        .dialogWrapper .dialogLoader {
+            display: block;
+            width: 32px;
+            height: 32px;
+            background: url(/project/images/dialog/ajax-loader.gif);
+            text-indent: -9999px;
+        }
+
+.scrollInfiniteLoader {
+    overflow: auto;
+    margin: 2em;
+    padding: 1em;
+    text-align: center;
+}
+    .scrollInfiniteLoader p {
+        margin: 0;
+    }
+.scrollInfiniteDivider {
+    overflow: auto;
+    margin: 2em;
+    padding: 1em;
+}
+    .scrollInfiniteDivider .left {
+        margin: 0;
+        float: left;
+    }
+    .scrollInfiniteDivider .right {
+        margin: 0;
+        float: right;
+    }
+    .scrollInfiniteDivider .center {
+        margin: 0;
+        text-align: center;
+    }
+
+.tipWrapper {
+    position: absolute;
+    z-index: 999;
+}
+    .tip {
+
+    }
+        .tipLoader {
+            display: block;
+            width: 32px;
+            height: 32px;
+            background: url(/project/images/dialog/ajax-loader.gif);
+            text-indent: -9999px;
+        }
+        
+.scrollableArea {
+    position: relative;
+    overflow: hidden;
+}
+    .scrollableAreaViewport {
+        position: absolute;
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: 150%;
+    }
+    .scrollableAreaTrack {
+        position: absolute;
+        display: block;
+        right: 2px;
+        top: 2px;
+        bottom: 2px;
+        width: 7px;
+        /*background: #ccc;*/
+    }
+        .scrollableAreaScroller {
+            background-clip: content-box;
+            background-color: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(85, 85, 85, 0.6);
+            border-radius: 7px 7px 7px 7px;
+            position: absolute;
+            width: 5px;
+        }
+    .scrollableAreaContent {
+    }

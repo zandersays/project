@@ -1,0 +1,137 @@
+look at xero.com
+
+Messaging / Communication
+  Rules for messages that can be configured to send emails/texts/voicemails based on criteria (accounting)
+
+
+Account Types
+Project
+RentScore
+
+Account Type Features for RentSCore
+
+
+1. Come up with 5 scenarios
+
+user signs up for a free account and then decides to upgrade to standard for 19.99 month
+
+  activate the standard featre on account_feature table, set ending
+
+
+// this can be versioned and can be scheduled to change
+account_type_feature_billing_preferences
+  rate
+  proration time unit
+  charge code
+  late fee schedule
+  lockout schedule
+  recurring payment requirements
+  one time payment requirements
+  require prepayment
+  allow payment in arrears  
+  minimum required minutes, hours, days
+  discount schedule based on contracted length
+  signature required
+  contract required - tie into a PDF
+  acceptable payment types
+  limit payment types based on past history - eg, they bounce 2 checks and you dont want checks from them anymore
+  incentives for continuing customers
+  coupons??? discounts/promo codes?
+  referrals? referral payouts to affiliates?
+
+
+
+  manual charge for a one-time proration
+
+when a transaction occurs, here is what to store
+
+
+
+  a recurring charge is created starting the first of the next month
+
+standard users adds lead syndicator for 49.99/month
+
+
+a new user enters promo code and receives premium service for 50/month for 6 months (when it is usually 150/month)
+  at month 5 we change the price of premium to be $100/month
+    when they run out of their promo at month 6, they go to 100/month
+
+on the 10th a standard user pays 19.99 to subscribe. that month they consumed 7 golden leads, 10 silver leads, and 13 comparable leads as well purchased lead syndicator and a feature listing
+  prorate out the 19.99 for the 21 or so days of the month and bill immediately
+  lead syndicator and a feature listing are prorated by date of purchase to end of billing period (end of month) -- bill immediately
+  the leads are paid for at the end of the current billing period (1st of the next month)
+
+how would you do the above if they prepaid 350
+  
+
+
+
+
+
+
+
+
+
+Feature pricing
+
+One off, Monthly, bi-monthly, quarterly, semi-annual, annually
+Consumables
+
+
+Proration
+  From calendar time (day/hour/min) to calendar time (optionally including some amoutn of time (1 day))
+
+Prepaid billings and allocation
+  Accrual based system
+    We don't earn anything until the feature has been delivered/consumed
+    Prepaids are a liability until earned
+
+Payment priority sequence
+  Based on charge codes, where prepaid or other money goes first
+  billing priority can be configured to be current time period per feature back, or oldest due time period for feature forward (IRS Style)
+
+Auto-billing
+  Progressive insurance
+  Once a month e-mail saying your account ending in will be billed this date and time unless you login and pay by this time
+  flat rate - x $ this date per month (not good)
+  variable rate - pay the ledger in full up to CAP (good)
+  watch out for pulling people twice, people get overdrafted and get pissed
+
+  you could do an algorithm where we look at the average payments per account per month, and if one is x # of std deviations away from the average, a human must authorize first
+  
+
+
+What about payments that aren't over the web
+
+
+
+Delinquency
+  Late fees may be tied to a specific feature
+  Late fees may also be tied to a full invoice
+  Late fees may be per day, percentage
+    One time late fee on the 6th, increasing by $5/day but capped at $50 per rent fee
+  Features may be turned off, with warning notifications over email, and on site
+  
+
+
+How does this tie to billing?
+
+Features have billing options that can be versioned (history)
+Be able to selectively retroactively apply changes and notify customers
+Be able to grandfather clients (maintain pricing) in spite of changes to billing
+Promotion codes / coupons
+  Time start
+  Time end
+  Products they apply for
+  Discount percentage or actual price (not to exceed the actual price of the product)
+  Promo code stacking options
+
+
+Billing aspects
+
+Discount system
+  Be able to get a discount
+
+When a feature is actually charged for
+  Immediately
+  In arrears at a user or system defined monthly or yearly day

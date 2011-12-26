@@ -1,0 +1,1 @@
+<p>Visit the <a href="<?php echo Project::getInstanceAccessPath(); ?>project/">control panel</a> to configure this instance.</p>

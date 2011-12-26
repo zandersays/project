@@ -1,0 +1,59 @@
+# Kameron Sheffield
+# 08/30/2011
+
+#! /bin/bash
+
+# clear the temp folder and redirect output, we don't want to see it
+rm test-temp/* >/dev/null 2>&1
+
+# input from the user
+input=$1
+
+# figure out what to do with the input
+if [ "$input" == "help" ] || [ "$input" == "-h" ]
+then
+	echo 
+	echo "Project Unit Test Script"
+	echo "  By: Kameron Sheffield"
+	echo "  Version: 08/30/2011"
+	echo
+	echo "Usage:" 
+	echo "  ./test               :  run all unit tests"
+	echo "  ./test all           :  run all unit tests"
+	echo "  ./test module_name   :  run all unit tests for 'module_name'"
+	echo "  ./test test_name     :  run unit test 'test_name'"
+	echo "  ./test help          :  this message"
+	echo "  ./test -h            :  this message"
+	echo
+elif [ "$input" == "" ] || [ "$input" == "all" ]
+then
+	# run all unit tests
+	phpunit --verbose --bootstrap config/bootstraps/all-bootstrap.php unit-tests/
+elif [ "$input" == "database" ]
+then
+	# run the database module unit tests
+	phpunit --verbose --bootstrap config/bootstraps/project-bootstrap.php unit-tests/system/modules/database 
+elif [ "$input" == "models" ]
+then
+	# run the models module unit tests
+	phpunit --verbose --bootstrap config/bootstraps/models-bootstrap.php unit-tests/system/modules/models
+else
+	# run a specific unit test file
+	# default bootstrap
+	bootstrap="config/bootstraps/project-bootstrap.php"
+
+	# find the file relative to the current location
+	file_location=`find -name $input*`
+	
+	# make sure we don't need a custom bootstrap
+	is_models=`find -name $input* | grep -c models`
+	if [ $is_models -gt 0 ]
+	then
+		bootstrap="config/bootstraps/models-bootstrap.php"
+	fi
+
+	#run the unit test
+	phpunit --verbose --bootstrap $bootstrap UnitTest $file_location
+fi
+
+exit 0

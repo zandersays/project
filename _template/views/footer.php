@@ -1,0 +1,1 @@
+<p style="margin-top: 3em;">&copy; <?php echo date('Y').' '.$siteTitle; ?>. All rights reserved.</p>

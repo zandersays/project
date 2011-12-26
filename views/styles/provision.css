@@ -1,0 +1,16 @@
+body {
+    background: #EEE;
+}
+#provision {
+    width: 510px;
+    margin: 4em auto 4em auto;
+}
+    #provision .formWrapperContainer {
+        background: #FFF;
+        border: 1px solid #CCC;
+        padding: 1em 1em 0 1em;
+        -moz-border-radius: .25em;
+        border-radius: .25em;
+        -moz-box-shadow: 0 0 1em #AAA;
+        box-shadow: 0 0 1em #AAA;
+    }
