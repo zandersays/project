@@ -70,6 +70,13 @@ class FormComponentFile extends FormComponent {
         $pseudoFileButton->html('Browse...');
         $pseudoFileWrapper->append($pseudoFileInput);
         $pseudoFileWrapper->append($pseudoFileButton);
+        
+        if($this->ajax) {
+            $pseudoFileAjaxStatus = HtmlElement::span(array(
+                'class' => 'pseudoFileAjaxStatus',
+            ));
+            $pseudoFileWrapper->append($pseudoFileAjaxStatus);
+        }
 
         $input = new HtmlElement('input', array(
             'type' => $this->type,

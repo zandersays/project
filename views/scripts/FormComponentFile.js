@@ -4,6 +4,10 @@ FormComponentFile = FormComponent.extend({
     },
         
     ajaxOnComplete: function(fileUploadHandler, response) {
+        this.component.find('.pseudoFileAjaxStatus').fadeOut(function() {
+            $(this).removeClass('pseudoFileAjaxStatusUploading')
+        });
+        
         //console.log('FormComponentFile ajaxOnComplete called!', fileUploadHandler, response);
         response = Json.decode(response);
         //console.log(response);
@@ -18,10 +22,24 @@ FormComponentFile = FormComponent.extend({
             this.component.find('input.file').addClass('ajaxHandled');
             
             //console.log(this.options.ajax.javaScriptFunction);
-            var javaScriptFunction = eval(this.options.ajax.javaScriptFunction);
-            //console.log(javaScriptFunction);
-            javaScriptFunction(response, this);
+            if(this.options.ajax.javaScriptFunctionContext !== false) {
+                window[this.options.ajax.javaScriptFunctionContext][this.options.ajax.javaScriptFunction](response, this);
+            }
+            else {
+                var javaScriptFunction = eval(this.options.ajax.javaScriptFunction);
+                //console.log(javaScriptFunction);
+                if(typeof(javaScriptFunction) == 'function') {
+                    javaScriptFunction(response, this);
+                }
+                else {
+                    console.log('Invalid JavaScript function called: ', this.options.ajax.javaScriptFunction);
+                }    
+            }
         }
+    },
+    
+    ajaxOnStart: function(fileUploadHandler, response) {
+        this.component.find('.pseudoFileAjaxStatus').addClass('pseudoFileAjaxStatusUploading').fadeIn();
     },
     
     ajax: function(options) {
@@ -78,6 +96,8 @@ FormComponentFile = FormComponent.extend({
             this.options.ajax.fileUploader = new FileUploader('/api/forms/processFormComponentFile/', ajaxData, {
                 'onCompleteContext': self,
                 'onComplete': 'ajaxOnComplete',
+                'onStartContext': self,
+                'onStart': 'ajaxOnStart',
                 'forceIFrame' : self.options.ajax.forceIFrame
             });
         }
@@ -306,7 +326,8 @@ FileUploader = Class.extend({
             this.queueFiles(files);
         }
         else if(this.fileUploadHandlerClass == 'FileUploadHandlerIFrame') {
-            this.queueFile(upload);
+            //console.log(upload);
+            this.queue(upload);
         }
     },
     
@@ -437,7 +458,10 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
     
     prime: function() {
         var self = this;
-        this.iframe = this.createIFrame();
+        
+        // Remember where the file input is, we'll need to move it to the temporary form and then back
+        this.fileInputOrigin = $(this.file).parent();
+        this.iFrame = this.createIFrame();
         this.form = this.createForm();
     },
     
@@ -450,7 +474,7 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
     
     onComplete: function() {
         var self = this;
-        var document = this.contentDocument ? this.contentDocument: this.contentWindow.document;
+        var document = this.iFrame.get(0).contentDocument ? this.iFrame.get(0).contentDocument : this.iFrame.get(0).contentWindow.document;
         var response = document.body.innerHTML;
         
         this.uploadedBytes = this.file.size;
@@ -458,7 +482,9 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
         this.uploadedMegabytes = this.file.size / 1024 / 1024;
         this.uploadedPercent = '100%';
         this.status = 'complete';
-        self.form.remove();
+        this.fileInputOrigin.append(this.file);
+        this.form.remove();
+        this.iFrame.remove();
         
         this.fileUploader.onComplete(this, response);
 
@@ -469,7 +495,7 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
         this.status = 'cancelling';
         
         this.form.remove();
-        this.iframe.attr('src', 'javascript:false;').remove();
+        this.iFrame.attr('src', 'javascript:false;').remove();
         
         this.onCancel();
         
@@ -483,17 +509,17 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
     
     createIFrame: function() {
         var self = this;
-        var iframeId = $(this.file).attr('id') + '-ajaxIFrame';
+        var iFrameId = $(this.file).attr('id') + '-ajaxIFrame';
         
         // src="javascript:false;" removes ie6 prompt on https
-        var iframe = $('<iframe src="javascript:false;" name="'+iframeId+'" />').attr('id', iframeId).hide();
-        $('body').append(iframe);
+        var iFrame = $('<iframe src="javascript:false;" name="'+iFrameId+'" />').attr('id', iFrameId).hide();
+        $('body').append(iFrame);
         
-        this.iframe.load(function() {
+        iFrame.load(function() {
             self.onComplete();
         });
 
-        return iframe;
+        return iFrame;
     },
 
     createForm: function() {
@@ -501,7 +527,7 @@ FileUploadHandlerIFrame = FileUploadHandler.extend({
         var url = this.url+'?'+$.param(this.data);
         
         form.attr('action', url);
-        form.attr('target', this.iframe.attr('name'));
+        form.attr('target', this.iFrame.attr('name'));
         form.hide();
         
         $('body').append(form);

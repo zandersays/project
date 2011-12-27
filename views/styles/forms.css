@@ -142,10 +142,11 @@
 /* Component Type - File */
 .form .formComponentFile { /*position: relative;*/ }
 .form .formComponentFile .pseudoFile { z-index: 1; position: absolute; }
-.form .formComponentFile .pseudoFile input { border: 1px solid #AAA !important; color: #000 !important; }
+.form .formComponentFile .pseudoFile input { border: 1px solid #AAA !important; color: #000 !important; float: left; display: block;  }
 .form .formComponentFile .pseudoFile input:disabled { border: 1px solid #AAA !important; color: #000 !important; }
 .form .formComponentFile .pseudoFile button:disabled { color: #000; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; }
-.form .formComponentFile .pseudoFile button { font-size: .8em; margin: 0 0 0 .25em; background: #FFFFFF url(../project/images/forms/button-background.png) repeat-x scroll left center; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; padding: .25em .5em .225em .5em; cursor: pointer; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -moz-border-radius: 5px; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -webkit-border-radius: 5px; }
+.form .formComponentFile .pseudoFile button { float: left; display: block; font-size: .8em; margin: 0 0 0 .25em; background: #FFFFFF url(../project/images/forms/button-background.png) repeat-x scroll left center; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; padding: .25em .5em .225em .5em; cursor: pointer; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -moz-border-radius: 5px; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -webkit-border-radius: 5px; }
+.form .formComponentFile .pseudoFile .pseudoFileAjaxStatus { display: none; height: 32px; width: 32px; float: left; display: block; margin-left: .5em; }
 .form .formComponentFile .file.hidden { z-index: 2; text-align: right; position: relative;  font-size: 1.1em; filter: alpha(opacity: 0); -moz-opacity: 0; -khtml-opacity: 0; opacity: 0; }
 
 /* Component Type - Name */

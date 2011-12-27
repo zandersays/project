@@ -252,6 +252,10 @@ class File {
         return filemtime($path);
     }
     
+    public function base64Encode() {
+        return base64_encode(File::content($this->file));
+    }
+    
     public function encode($options = array()) {
         return array(
             'name' => isset($options['name']) ? $options['name'] : $this->name,

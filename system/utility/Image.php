@@ -38,6 +38,101 @@ class Image extends File {
 
         return $this;
     }
+    
+    function blur($distance = 1) {
+        $imageResource = imagecreatefromjpeg($this->file);
+        
+        $imageX = imagesx($imageResource);
+        $imageY = imagesy($imageResource);
+
+        for($x = 0; $x < $imageX; ++$x) {
+            for($y = 0; $y < $imageY; ++$y) {
+                $newR = 0;
+                $newG = 0;
+                $newB = 0;
+
+                $colors = array();
+                $currentColor = imagecolorat($imageResource, $x, $y);
+
+                for($k = $x - $distance; $k <= $x + $distance; ++$k) {
+                    for($l = $y - $distance; $l <= $y + $distance; ++$l) {
+                        if($k < 0) {
+                            $colors[] = $currentColor;
+                            continue;
+                        }
+                        if($k >= $imageX) {
+                            $colors[] = $currentColor;
+                            continue;
+                        }
+                        if($l < 0) {
+                            $colors[] = $currentColor;
+                            continue;
+                        }
+                        if($l >= $imageY) {
+                            $colors[] = $currentColor;
+                            continue;
+                        }
+                        $colors[] = imagecolorat($imageResource, $k, $l);
+                    }
+                }
+
+                foreach($colors as $colour) {
+                    $newR += ($colour >> 16) & 0xFF;
+                    $newG += ($colour >> 8) & 0xFF;
+                    $newB += $colour & 0xFF;
+                }
+
+                $elementCount = count($colors);
+                $newR /= $elementCount;
+                $newG /= $elementCount;
+                $newB /= $elementCount;
+
+                $newColor = imagecolorallocate($imageResource, $newR, $newG, $newB);
+                imagesetpixel($imageResource, $x, $y, $newColor);
+            }
+        }
+        
+        imagejpeg($imageResource, $this->file, 100);
+        
+        return $this;
+    }
+    
+    function jpgQuality($quality = 100) {
+        $imageResource = imagecreatefromjpeg($this->file);
+        imagejpeg($imageResource, $this->file, $quality);
+        
+        return $this;
+    }
+
+    function gaussianBlur($passes = 1) {
+        $imageResource = imagecreatefromjpeg($this->file);
+        for($i = 0; $i < $passes; $i++) {
+            $imageFilter = imagefilter($imageResource, IMG_FILTER_GAUSSIAN_BLUR);    
+        }
+        imagejpeg($imageResource, $this->file, 100);
+        
+        return $this;
+    }
+    
+    function opacity($level = 50) {
+        $imageSource = imagecreatefromjpeg($this->file);
+        $imageDestination = imagecreatefromjpeg($this->file);
+        $white = imagecolorallocate($imageResource, 255, 255, 255);
+        imagecolortransparent($imageDestination, $white);
+        imagefilledrectangle($imageDestination, 0, 0, $this->width, $this->height, $white);
+        imagecopymerge($imageDestination, $imageSource, 0, 0, 0, 0, $this->width, $this->height, $level);
+        imagejpeg($imageDestination, $this->file, 100);
+        
+        return $this;
+    }
+    
+    function brightness($level = 50) {
+        $imageResource = imagecreatefromjpeg($this->file);
+        $imageFilter = imagefilter($imageResource, IMG_FILTER_BRIGHTNESS, $level);    
+        imagejpeg($imageResource, $this->file, 100);
+        
+        return $this;
+    }
 
     /**
      * Convert an image into a jpg. Supports jpeg, gif, png, and bmp.
