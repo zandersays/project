@@ -520,6 +520,7 @@ class Project {
     }
 
     public static function addAutoLoadClasses($classes, $type = 'project') {
+        //print_r($classes);
         if(!empty($classes)) {
             $path = $type == 'project' ? Project::$instance->projectPath : Project::$instance->instancePath;
 

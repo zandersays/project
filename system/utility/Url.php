@@ -313,6 +313,48 @@ class Url {
     public static function encode($string) {
         return urlencode($string);
     }
+    
+    public static function current($options = array()) {
+        if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        }
+        else {
+            $protocol = 'http://';
+        }
+        $currentUrl = $protocol.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+        $parts = parse_url($currentUrl);
+
+        $query = '';
+        if(!empty($parts['query'])) {
+            $parameters = explode('&', $parts['query']);
+            $retainedParameters = array();
+            foreach($parameters as $parameter) {
+                // Drop any parameters if the parametersToStrip option is used
+                if(isset($options['parametersToStrip'])) {
+                    if(!Arr::contains(String::sub($parameter, 0, String::indexOf('=', $parameter)), $options['parametersToStrip'])) {
+                        echo 'Keeping: '.$parameter;
+                        $retainedParameters[] = $parameter;
+                    }
+                }
+                else {
+                    $retainedParameters[] = $parameter;
+                }
+            }
+
+            if(!empty($retainedParameters)) {
+                $query = '?'.implode($retainedParameters, '&');
+            }
+        }
+
+        // Use port if non default
+        $port =
+                isset($parts['port']) &&
+                (($protocol === 'http://' && $parts['port'] !== 80) ||
+                ($protocol === 'https://' && $parts['port'] !== 443)) ? ':'.$parts['port'] : '';
+
+        // Rebuild
+        return $protocol.$parts['host'].$port.$parts['path'].$query;
+    }
 
     /**
      * The url as a string.
