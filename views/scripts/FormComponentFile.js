@@ -308,7 +308,15 @@ FileUploader = Class.extend({
     
     upload: function(upload) {
         if(this.fileUploadHandlerClass == 'FileUploadHandlerXhr'){
-            var uploadType = upload.constructor.toString().match(/^\[object\s(.*)\]$/)[1];
+            // get the constructor (firefox is a object and webkit is a function so make the regex handle both cases)
+            var constructorString = upload.constructor.toString().match(/object\s\w+|function\s\w+/);
+            // we found a constructor but match returns an array so grab the string
+            if(constructorString !== undefined){
+                constructorString = constructorString[0];
+                var uploadType = constructorString.split(' ')[1];
+            } else {
+                console.log('something went horribly wrong', 'check your upload handler');
+            }
 
             // Determine what we are uploading
             var files = [];
