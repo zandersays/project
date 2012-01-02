@@ -50,7 +50,7 @@ class Url {
 
         // populate all of the fields 
         if(array_key_exists(('host'), $parsedUrl)){
-            $this->domain = $this->trimWWW($parsedUrl['host']);
+            $this->domain = $this->trimWww($parsedUrl['host']);
             $splitDomain = $this->splitBaseAndSubDomains($this->domain);
             $this->baseDomain = $splitDomain['baseDomain'];
             $this->subDomain = $splitDomain['subDomain'];
@@ -163,7 +163,7 @@ class Url {
      * @param string $url
      * @return string
      */
-    private function trimWWW($url){
+    private function trimWww($url){
 
         $wwwIndex = strpos($url, 'www');
         if($wwwIndex === false){
@@ -305,6 +305,10 @@ class Url {
 
             return true;
     }
+    
+    public static function is($string) {
+        return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $string);
+    }
 
     public static function decode($string) {
         return urldecode($string);
@@ -354,6 +358,12 @@ class Url {
 
         // Rebuild
         return $protocol.$parts['host'].$port.$parts['path'].$query;
+    }
+    
+    public static function removeQueryParameter($parameter, $url) {
+        $url = preg_replace('/(.*)(?|&)'.$parameter.'=[^&]+?(&)(.*)/i', '$1$2$4', $url.'&');
+        $url = substr($url, 0, -1);
+        return $url;
     }
 
     /**
