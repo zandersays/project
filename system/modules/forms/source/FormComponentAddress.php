@@ -86,10 +86,23 @@ class FormComponentAddress extends FormComponent {
             'state' => array(),
             'county' => array(),
         );
+        
+        
         // some defaults that allow for input
         $this->inputOptions = array_merge($defaultInputOptions, $this->inputOptions);
+        
+        $defaultValues = array(
+            'addressLine1' => '', 
+            'addressLine2' => '', 
+            'city' => '', 
+            'state' => '', 
+            'zip' => '', 
+            'country' => '');
+        
         if(Arr::is($this->initialValue)) {
-            $this->initialValue = array_merge(array('addressLine1' => '', 'addressLine2' => '', 'city' => '', 'state' => '', 'zip' => '', 'country' => ''), $this->initialValue);
+            $this->initialValue = array_merge($defaultValues, $this->initialValue);
+        } else {
+            $this->initialValue = $defaultValues;
         }
 
         // Add the Address Line 1 input tag
