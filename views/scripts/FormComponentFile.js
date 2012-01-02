@@ -307,7 +307,11 @@ FileUploader = Class.extend({
     },
     
     upload: function(upload) {
+<<<<<<< HEAD
         if(this.fileUploadHandlerClass === 'FileUploadHandlerXhr'){
+=======
+        if(this.fileUploadHandlerClass == 'FileUploadHandlerXhr'){
+>>>>>>> 716df0d7e9642848c045fd440d01d2bc0d94a18b
             // get the constructor (firefox is a object and webkit is a function so make the regex handle both cases)
             var constructorString = upload.constructor.toString().match(/object\s\w+|function\s\w+/);
             // we found a constructor but match returns an array so grab the string
@@ -317,7 +321,11 @@ FileUploader = Class.extend({
             } else {
                 console.log('something went horribly wrong', 'check your upload handler');
             }
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> 716df0d7e9642848c045fd440d01d2bc0d94a18b
             // Determine what we are uploading
             var files = [];
 
