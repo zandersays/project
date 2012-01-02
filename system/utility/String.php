@@ -428,7 +428,12 @@ class String {
     }
 
     static function time($string) {
-        return strtotime($string);
+        if(Number::isInteger($string)) {
+            return $string;
+        }
+        else {
+            return strtotime($string);    
+        }
     }
 
     /**

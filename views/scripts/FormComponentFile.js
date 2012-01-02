@@ -307,25 +307,33 @@ FileUploader = Class.extend({
     },
     
     upload: function(upload) {
-        if(this.fileUploadHandlerClass == 'FileUploadHandlerXhr'){
-            var uploadType = upload.constructor.toString().match(/^\[object\s(.*)\]$/)[1];
-
+        if(this.fileUploadHandlerClass === 'FileUploadHandlerXhr'){
+            // get the constructor (firefox is a object and webkit is a function so make the regex handle both cases)
+            var constructorString = upload.constructor.toString().match(/object\s\w+|function\s\w+/);
+            // we found a constructor but match returns an array so grab the string
+            if(constructorString !== undefined){
+                constructorString = constructorString[0];
+                var uploadType = constructorString.split(' ')[1];
+            } else {
+                console.log('something went horribly wrong', 'check your upload handler');
+            }
+            
             // Determine what we are uploading
             var files = [];
 
             // We are handling a single file
-            if(uploadType == 'File') {
+            if(uploadType === 'File') {
                 files.push(upload);
             }
             // We are working with an HTML5 input with xhr support
-            else if(uploadType == 'HTMLInputElement' && this.xhrIsSupported) {
+            else if(uploadType === 'HTMLInputElement' && this.xhrIsSupported) {
                 files = upload.files;
             }
 
             // Pass the array of files to be uploaded
             this.queueFiles(files);
         }
-        else if(this.fileUploadHandlerClass == 'FileUploadHandlerIFrame') {
+        else if(this.fileUploadHandlerClass === 'FileUploadHandlerIFrame') {
             //console.log(upload);
             this.queue(upload);
         }
