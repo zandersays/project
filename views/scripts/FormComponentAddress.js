@@ -97,7 +97,7 @@ FormComponentAddress = FormComponent.extend({
         address.zip = self.component.find(':input[id*=zip]').val();
         address.country = self.component.find(':input[id*=country]').val();
 
-        this.component.find(':input').each(function(index, input) {
+        this.component.find(':input:not(button)').each(function(index, input) {
             address[$(input).attr('id').replace(self.id+'-', '')] = $(input).val();
         });
         if(this.options.emptyValue){

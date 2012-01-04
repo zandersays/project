@@ -169,7 +169,7 @@ Form = Class.extend({
                             //console.log('Running ', previousPage.id, ' onBefore');
                             onScrollToFunctions.onBefore();
                         }
-                        if(onScrollToFunctions.onBefore != undefined &&  typeof onScrollToFunctions.onAfter == 'function') {
+                        if(onScrollToFunctions.onAfter != undefined &&  typeof onScrollToFunctions.onAfter == 'function') {
                             //console.log('Running ', previousPage.id, ' onAfter');
                             onScrollToFunctions.onAfter();
                         }
@@ -221,7 +221,7 @@ Form = Class.extend({
             var formPage = new FormPage(self, formPageKey, formPageValue.options);
             formPage.show();
             
-            // Handle page level dependencies - gather all of the dependicies in the dependencies variable
+            // Handle page level dependencies - gather all of the dependencies in the dependencies variable
             if(formPage.options.dependencyOptions !== null) {
                 $.each(formPage.options.dependencyOptions.dependentOn, function(index, componentId) {
                     if(dependencies[componentId] === undefined) {
@@ -951,8 +951,9 @@ Form = Class.extend({
 
                     // Run any specific page functions
                     //console.log(self.currentFormPage);
+                    // which one do we need to run?
                     if(self.currentFormPage.options.onScrollTo.onAfter) {
-                        self.currentFormPage.options.onScrollTo.onAfter();
+                        //self.currentFormPage.options.onScrollTo.onAfter();
                     }
 
                     // Setup the controls

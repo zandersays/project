@@ -754,16 +754,20 @@ FormComponent = Class.extend({
                 if(this.options.dependencyOptions.display == 'hide') {
                     //console.log('hiding component ', this.id)
                     if(animationOptions.hideEffect == 'none' || animationOptions.hideDuration === 0){
-                        elementsToDisable.hide(animationOptions.hideDuration);
+                        //console.log('hiding component ', elementsToDisable, animationOptions.hideDuration);
+                        (animationOptions.hideDuration === 0) ? elementsToDisable.hide() : elementsToDisable.hide(animationOptions.hideDuration);;
+                        //elementsToDisable.hide(animationOptions.hideDuration);
+                        
                         self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
                     }
                     else {
                         if(animationOptions.hideEffect === 'fade'){
+                            
                             elementsToDisable.fadeOut(animationOptions.hideDuration, function() {
                                 self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
                             });
                         }
-                        else if(animationOptions.hideEffect === 'fade'){
+                        else if(animationOptions.hideEffect === 'slide'){
                         
                             elementsToDisable.slideUp(animationOptions.hideDuration, function() {
                                 self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
