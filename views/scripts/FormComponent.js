@@ -755,7 +755,8 @@ FormComponent = Class.extend({
                     //console.log('hiding component ', this.id)
                     if(animationOptions.hideEffect == 'none' || animationOptions.hideDuration === 0){
                         //console.log('hiding component ', elementsToDisable, animationOptions.hideDuration);
-                        (animationOptions.hideDuration === 0) ? elementsToDisable.hide() : elementsToDisable.hide(animationOptions.hideDuration);;
+                        //
+                        (animationOptions.hideDuration === 0) ? elementsToDisable.hide() : elementsToDisable.hide(animationOptions.hideDuration);
                         //elementsToDisable.hide(animationOptions.hideDuration);
                         
                         self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);

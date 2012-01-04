@@ -15,6 +15,7 @@ var Slider = Class.extend({
             navigation: {
                 arrow: true,
                 carousel: false,
+                pauseOnNavigate: false,
                 slideshow: false,
                 keyboard: false
             },
@@ -46,7 +47,7 @@ var Slider = Class.extend({
         });
         
         if(this.options.animation.type == 'scroll'){
-            this.slides.css('position', 'static').width(this.wrapper.width());
+            this.slides.css({'position': 'static', 'float': 'left'}).width(this.wrapper.width());
             var scroller;
             if(this.slides.parent().get(0) === this.wrapper.get(0)){
                 // slide have no wrapper and we need to create a scroll wrapper
@@ -63,7 +64,7 @@ var Slider = Class.extend({
                 .width((this.slides.length * this.wrapper.width()))
                 .height(this.wrapper.height());
             this.scroller = scroller;
-        } else if (this.options.animation.type == 'vertical' || this.options.animation.type == 'horizontal') {
+        } else if (this.options.animation.type == 'vertical' || this.options.animation.type == 'horizontal'|| this.options.animation.type == 'fade') {
             this.slides.css('position', 'absolute');
         }
         
@@ -104,7 +105,9 @@ var Slider = Class.extend({
     // reset slideshow timer
     resetSlideshow: function() {
         this.pauseSlideshow();
-        this.playSlideshow();
+        if(!this.options.navigation.pauseOnNavigate){
+            this.playSlideshow();
+        }
     },
     
     displayNext: function() {
@@ -143,7 +146,7 @@ var Slider = Class.extend({
         slide.addClass(this.classes.active);
         if (animationOptions.type == 'vertical') {
             // get offset
-
+            
             offset = this.wrapper.height();
             // position slide
             slide.css({
@@ -173,7 +176,6 @@ var Slider = Class.extend({
         }
         else if (animationOptions.type == 'horizontal') {
             offset = this.wrapper.width();
-
             slide.css({
                 'left' : offset+'px'
             }
@@ -187,14 +189,14 @@ var Slider = Class.extend({
                     setTimeout(function(){
                         slide.animate({
                             'left': '0px'
-                        }, animationOptions.duration);
+                        }, animationOptions.duration).show();
                     }, animationOptions.delay);
                 }
             });
             if(animationOptions.delay === null){
                 slide.animate({
                     'left': '0px'
-                }, animationOptions.duration);
+                }, animationOptions.duration).show();
             }
                     
         }
@@ -202,6 +204,7 @@ var Slider = Class.extend({
             var index = slide.index();
             offset = this.wrapper.width();
             offset = offset * index;
+            this.scroller.stop().dequeue();
             this.scroller.animate({
                 'left': '-'+offset+'px'
             }, animationOptions.duration, function(){
@@ -239,39 +242,40 @@ var Slider = Class.extend({
     
     setClickListeners: function() {
         var self = this;
-            // arrow navigation
-            if(this.options.navigation.arrow){
-                $('.'+this.classes.prevButton).click(function(event){
-                    self.displayPrevious();
-                    if(self.options.slideshow && self.slideshow){
-                        self.resetSlideshow();
-                    }
+        // arrow navigation
+        if(this.options.navigation.arrow){
+            $('.'+this.classes.prevButton).click(function(event){
+                self.displayPrevious();
+                if(self.options.slideshow && self.slideshow){
+                    self.resetSlideshow();
+                }
 
-                });
-                $('.'+this.classes.nextButton).click(function(event){
-                    self.displayNext();
-                    if(self.options.slideshow && self.slideshow){
-                        self.resetSlideshow();
-                    }
-                });
-            }
-            //carasoul navigation
-            if(this.options.navigation.carousel){
-                $('.'+this.classes.carousel).click(function(event){
-                    
-                    var targetId = $(event.target).attr('id');
-                    
-                    var slideId = targetId.replace(self.options.carouselPrefix, '');
-                    var slide = $('#'+slideId);
-                    
-                    self.displaySlide(slide);
-                    if(self.options.slideshow && self.slideshow){
-                        self.resetSlideshow();
-                    }
-                });
-            }
-        // slideshow controls
-            
+            });
+            $('.'+this.classes.nextButton).click(function(event){
+                self.displayNext();
+                if(self.options.slideshow && self.slideshow){
+                    self.resetSlideshow();
+                }
+            });
         }
+        //carasoul navigation
+        if(this.options.navigation.carousel){
+            //console.log($('.'+this.classes.carousel));
+            $('.'+this.classes.carousel).click(function(event){
+                //console.log('click', $(event.target));
+                var targetId = $(event.target).attr('id');
+                    
+                var slideId = targetId.replace(self.options.carouselPrefix, '');
+                var slide = $('#'+slideId);
+                    
+                self.displaySlide(slide);
+                if(self.options.slideshow && self.slideshow){
+                    self.resetSlideshow();
+                }
+            });
+        }
+    // slideshow controls
+            
+    }
     
 });
