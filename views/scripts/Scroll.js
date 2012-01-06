@@ -151,16 +151,21 @@ var ScrollClass = Class.extend({
         }
     },
     
-    elementTop: function(element, callback) {
+    elementTop: function(element, options) {
+        options = $.extend(true, {
+            'onAfter': function() {},
+            'onBefore': function() {},
+            'offsetTop': 18
+        }, options || {});
+        
+        options.onBefore();
         $('html,body').animate(
             {
-                scrollTop: $(element).offset().top - 18
+                scrollTop: $(element).offset().top - options.offsetTop
             },
             'slow',
             function() {
-                if(callback) {
-                    callback();
-                }
+                options.onAfter();
             }
         );
     },
