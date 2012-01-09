@@ -175,7 +175,20 @@ Form = Class.extend({
                         }
                     }
                 });
-            });
+            }); 
+        } 
+        // run the on scroll to for the first page of the form "initialize the page"
+        else {
+            if(self.currentFormPage.options.onScrollTo) {
+                if(self.currentFormPage.options.onScrollTo.onBefore != undefined && typeof self.currentFormPage.options.onScrollTo.onBefore == 'function') {
+                    //console.log('Running ', previousPage.id, ' onBefore');
+                    self.currentFormPage.options.onScrollTo.onBefore();
+                }
+                if(self.currentFormPage.options.onScrollTo.onAfter != undefined &&  typeof self.currentFormPage.options.onScrollTo.onAfter == 'function') {
+                    //console.log('Running ', previousPage.id, ' onAfter');
+                    self.currentFormPage.options.onScrollTo.onAfter();
+                }
+            }
         }
 
         // Analytics
@@ -189,9 +202,10 @@ Form = Class.extend({
                 scrollLeftIndex = index;
             } 
         });
-        // find its left page egde via index and wrapper width and then scroll to it
+        // find its left page edge via index and wrapper width and then scroll to it
         this.scrollPosition = self.formPageWrapper.width() * scrollLeftIndex;
         self.formPageWrapper.scrollLeft(this.scrollPosition);
+        // run any onScrollTo Functions for the page
                 
         // Record when the form is finished initializing
         this.initializing = false;
@@ -204,7 +218,25 @@ Form = Class.extend({
                 return false;
             }
         });
-        // Instantly adjust the height of the form after the window is loaded
+        
+        //handle back forward buttons for form navigation
+        $.address.externalChange(function(event) {  
+            var pageId  = event.value.replace(/\//, '');
+
+            var scrollPageId = self.formPageIdArray[0];
+            if(self.formPageIdArray.indexOf(pageId) !== -1){
+                scrollPageId = pageId;
+            } else if(self.options.startingPageId) {
+                scrollPageId = self.options.startingPageId;
+            } 
+            if(self.formPageIdArray.indexOf(scrollPageId) !== self.currentFormPageIdArrayIndex ){
+                
+                self.currentFormPageIdArrayIndex = self.formPageIdArray.indexOf(scrollPageId);
+                self.scrollToPage(scrollPageId);
+            } 
+        });
+        
+        // Instantly adjust the height of the form after the window is loaded      
         $(window).load(function() {
             //console.log('Adjusting height!', self.id);
             
@@ -814,9 +846,9 @@ Form = Class.extend({
     },
         
     scrollToPage: function(formPageId, options) {
-        //console.log('Form('+this.id+'):scrollToPage', formPageId, options);
+        //console.log('Form('+this.id+'):scrollToPage', formPageId, 'from ', this.currentFormPage.id, options);
         var self = this;
-        
+        // Remember the active duration time of the page
         
 
         // Prevent scrolling to dependency disabled pages
@@ -824,27 +856,30 @@ Form = Class.extend({
             return false;
         }
         
+        var currentFormPage = this.getActivePage();
+        
         // Handle onScrollAway onBefore
         //console.log(this.formPageIdArray.indexOf(this.currentFormPage.id), this.currentFormPageIdArrayIndex);
-        var direction = this.formPageIdArray.indexOf(formPageId) < this.formPageIdArray.indexOf(this.currentFormPage.id) ? 'backwards' : 'forwards';
-        if(this.currentFormPage && this.currentFormPage.options.onScrollAway.onBefore !== null) {
+        var direction = this.formPageIdArray.indexOf(formPageId) < this.formPageIdArray.indexOf(currentFormPage.id) ? 'backwards' : 'forwards';
+        if(currentFormPage && currentFormPage.options.onScrollAway.onBefore !== null && currentFormPage.options.onScrollAway.onBefore !== undefined) {
+            
             // Put a notice up if defined
-            if(this.currentFormPage.options.onScrollAway.notificationHtml !== undefined) {
+            if(currentFormPage.options.onScrollAway.notificationHtml !== undefined) {
                 if(self.control.find('.formScrollToNotification').length != 0) {
-                    self.control.find('.formScrollToNotification').html(this.currentFormPage.options.onScrollAway.notificationHtml);
+                    self.control.find('.formScrollToNotification').html(currentFormPage.options.onScrollAway.notificationHtml);
                 }
                 else {
-                    self.control.append('<li class="formScrollToNotification">'+this.currentFormPage.options.onScrollAway.notificationHtml+'<li>');
+                    self.control.append('<li class="formScrollToNotification">'+currentFormPage.options.onScrollAway.notificationHtml+'<li>');
                 }   
             }
-            var onScrollAwayOnBefore = this.currentFormPage.options.onScrollAway.onBefore(direction);
+            var onScrollAwayOnBefore = currentFormPage.options.onScrollAway.onBefore(direction, formPageId);
             //console.log(onScrollAwayOnBefore);
             self.control.find('.formScrollToNotification').remove();
             
             // Don't move to the next page if the function returns false
             if(!onScrollAwayOnBefore) {
                 // set the correct current page index
-                this.currentFormPageIdArrayIndex  = this.formPageIdArray.indexOf(this.currentFormPage.id);
+                this.currentFormPageIdArrayIndex  = this.formPageIdArray.indexOf(currentFormPage.id);
                 return false;
             }
         }
@@ -880,9 +915,8 @@ Form = Class.extend({
             formPage.options.onScrollTo.onBefore();
         }
         
-        // Remember the active duration time of the page
-        var oldFormPage = this.getActivePage();
-        oldFormPage.durationActiveInSeconds = oldFormPage.durationActiveInSeconds + oldFormPage.getTimeActive();
+        
+        currentFormPage.durationActiveInSeconds = currentFormPage.durationActiveInSeconds + currentFormPage.getTimeActive();
 
         // Show every page so you can see them as you scroll through
         $.each(this.formPages, function(formPageKey, formPage) {
@@ -927,6 +961,9 @@ Form = Class.extend({
                 onAfter: function() {
                     // Indicate the form is has stopped scrolling the page
                     self.scrollingPage = false;
+                    
+                    
+                    
                     self.scrollPosition = self.formPageWrapper.scrollLeft();
                     // Don't hide any pages while scrolling
                     if($(self.formPageWrapper).queue('fx').length <= 1 ) {
@@ -955,6 +992,14 @@ Form = Class.extend({
                     if(self.currentFormPage.options.onScrollTo.onAfter) {
                         //self.currentFormPage.options.onScrollTo.onAfter();
                     }
+                    
+                    //set hash for history storage
+                    if(self.currentFormPageIdArrayIndex !== 0){
+                        $.address.value(self.currentFormPage.id);    
+                    } else{
+                        $.address.value('');
+                    }
+                    
 
                     // Setup the controls
                     self.setupControl();
@@ -967,9 +1012,17 @@ Form = Class.extend({
                     if(self.currentFormPage.validationPassed === false && !initializing){
                         self.currentFormPage.focusOnFirstFailedComponent();
                     }
+                    
+                    // Handle page specific onScrollAway onAfter custom function
+                    if(currentFormPage && currentFormPage.options.onScrollAway.onAfter !== null && currentFormPage.options.onScrollAway.onAfter !== undefined) {
+                        currentFormPage.options.onScrollAway.onAfter(direction, formPageId);
+                        if(currentFormPage.options.onScrollAway.notificationHtml !== null) {
+                            self.control.find('li.formScrollToNotification').remove();
+                        }
+                    }
 
                     // Handle page specific onScrollTo onAfter custom function
-                    if(self.formPages[formPageId] && self.formPages[formPageId].options.onScrollTo.onAfter !== null) {
+                    if(self.formPages[formPageId] && self.formPages[formPageId].options.onScrollTo.onAfter !== null && self.formPages[formPageId].options.onScrollTo.onAfter !== undefined) {
                         self.formPages[formPageId].options.onScrollTo.onAfter();
                         if(self.formPages[formPageId].options.onScrollTo.notificationHtml !== null) {
                             self.control.find('li.formScrollToNotification').remove();

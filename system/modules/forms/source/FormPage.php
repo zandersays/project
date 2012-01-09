@@ -11,7 +11,9 @@ class FormPage {
     var $form;
     var $formSectionArray = array();
     var $onBeforeScrollTo; // array('function', 'notificationHtml')
+    var $onAfterScrollTo; // array('function', 'notificationHtml')
     var $onBeforeScrollAway;
+    var $onAfterScrollAway;
     var $data;
     var $anonymous = false;
 

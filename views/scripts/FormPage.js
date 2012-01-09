@@ -19,23 +19,23 @@ FormPage = Class.extend({
         }, options || {});
         
         // Setup the onScrollTo functions
-        if(this.options.onScrollTo.onBefore !== null) {
-            var onBeforeFunction = $.trim(this.options.onScrollTo.onBefore);
-            this.options.onScrollTo.onBefore = function() {return eval(onBeforeFunction);};
+        if(this.options.onScrollTo.onBefore !== null && this.options.onScrollTo.onBefore !== undefined) {
+            var toOnBeforeFunction = $.trim(this.options.onScrollTo.onBefore);
+            this.options.onScrollTo.onBefore = function() {return eval(toOnBeforeFunction);};
         }
-        if(this.options.onScrollTo.onAfter !== null) {
-            var onAfterFunction = $.trim(this.options.onScrollTo.onAfter);
-            this.options.onScrollTo.onAfter = function() {return eval(onAfterFunction);};
+        if(this.options.onScrollTo.onAfter !== null && this.options.onScrollTo.onAfter !== undefined) {
+            var toOnAfterFunction = $.trim(this.options.onScrollTo.onAfter);
+            this.options.onScrollTo.onAfter = function() {return eval(toOnAfterFunction);};
         }
         
         // Setup the onScrollAway functions
-        if(this.options.onScrollAway.onBefore !== null) {
-            var onBeforeFunction = $.trim(this.options.onScrollAway.onBefore);
-            this.options.onScrollAway.onBefore = function(direction) {return eval(onBeforeFunction);};
+        if(this.options.onScrollAway.onBefore !== null && this.options.onScrollAway.onBefore !== undefined) {
+            var awayOnBeforeFunction = $.trim(this.options.onScrollAway.onBefore);
+            this.options.onScrollAway.onBefore = function(direction, formPageId) {return eval(awayOnBeforeFunction);};
         }
-        if(this.options.onScrollAway.onAfter !== null) {
-            var onAfterFunction = $.trim(this.options.onScrollAway.onAfter);
-            this.options.onScrollAway.onAfter = function(direction) {return eval(onAfterFunction);};
+        if(this.options.onScrollAway.onAfter !== null && this.options.onScrollAway.onAfter !== undefined) {
+            var awayOnAfterFunction = $.trim(this.options.onScrollAway.onAfter);
+            this.options.onScrollAway.onAfter = function(direction, formPageId) {return eval(awayOnAfterFunction);};
         }
 
         // Class variables
