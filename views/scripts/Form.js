@@ -220,21 +220,27 @@ Form = Class.extend({
         });
         
         //handle back forward buttons for form navigation
-        $.address.externalChange(function(event) {  
-            var pageId  = event.value.replace(/\//, '');
+        if($.address){
+            $.address.externalChange(function(event) {  
+                var pageId  = event.value.replace(/\//, '');
 
-            var scrollPageId = self.formPageIdArray[0];
-            if(self.formPageIdArray.indexOf(pageId) !== -1){
-                scrollPageId = pageId;
-            } else if(self.options.startingPageId) {
-                scrollPageId = self.options.startingPageId;
-            } 
-            if(self.formPageIdArray.indexOf(scrollPageId) !== self.currentFormPageIdArrayIndex ){
+                var scrollPageId = self.formPageIdArray[0];
+                if(self.formPageIdArray.indexOf(pageId) !== -1 && !self.formPages[pageId].disabledByDependency){
+                    scrollPageId = pageId;
+                } else if(self.options.startingPageId) {
+                    scrollPageId = self.options.startingPageId;
+                } 
+                if(self.formPageIdArray.indexOf(scrollPageId) !== self.currentFormPageIdArrayIndex ){
                 
-                self.currentFormPageIdArrayIndex = self.formPageIdArray.indexOf(scrollPageId);
-                self.scrollToPage(scrollPageId);
-            } 
-        });
+                    self.currentFormPageIdArrayIndex = self.formPageIdArray.indexOf(scrollPageId);
+                    self.scrollToPage(scrollPageId);
+                }
+                if(self.formPages[pageId] && self.formPages[pageId].disabledByDependency){
+                    $.address.value('');
+                }
+            });
+        }
+        
         
         // Instantly adjust the height of the form after the window is loaded      
         $(window).load(function() {
@@ -994,7 +1000,7 @@ Form = Class.extend({
                     }
                     
                     //set hash for history storage
-                    if(self.currentFormPageIdArrayIndex !== 0){
+                    if($.address && self.currentFormPageIdArrayIndex !== 0){
                         $.address.value(self.currentFormPage.id);    
                     } else{
                         $.address.value('');

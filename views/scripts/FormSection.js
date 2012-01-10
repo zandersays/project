@@ -38,6 +38,11 @@ FormSection = Class.extend({
             
             this.createInstanceButton();
         }
+        if(this.options.instanceOptions && this.options.instanceOptions.callback) {
+            var instanceCallBackFunction = $.trim(this.options.instanceOptions.callback);
+                                                            //type is add or remove 
+            this.options.instanceOptions.callback = function(type) {return eval(instanceCallBackFunction);};
+        }
     },
     
     select: function(formComponentId) {
@@ -171,6 +176,9 @@ FormSection = Class.extend({
 
                 // Relabel the instance array
                 parent.relabelSectionInstances(parent.instanceArray, animationOptions);
+                if(parent.options.instanceOptions.callback){
+                    parent.options.instanceOptions.callback('remove');
+                }
             });
 
             // Add the clone of the instance only if it not already pre-generated
@@ -216,6 +224,9 @@ FormSection = Class.extend({
             }
             
             newSectionInstance = instanceObject;
+            if(this.options.instanceOptions.callback){
+                this.options.instanceOptions.callback('add');
+            }
         }
         
         return newSectionInstance;

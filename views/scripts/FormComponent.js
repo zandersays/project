@@ -55,6 +55,11 @@ FormComponent = Class.extend({
             this.instanceArray = [this];
             this.createInstanceButton();
         }
+        if(this.options.instanceOptions && this.options.instanceOptions.callback) {
+            var instanceCallBackFunction = $.trim(this.options.instanceOptions.callback);
+                                                            //type is add or remove 
+            this.options.instanceOptions.callback = function(type) {return eval(instanceCallBackFunction);};
+        }
 
         // Initialize the implemented component
         this.prime();
@@ -365,7 +370,10 @@ FormComponent = Class.extend({
                     instanceObject.checkDependencies();
                 });
             }
-
+            
+            if(this.options.instanceOptions.callback){
+                this.options.instanceOptions.callback('add');
+            }
             // Resize the page
             //parent.parentFormSection.parentFormPage.scrollTo();
         }
