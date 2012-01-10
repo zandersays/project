@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Abstraction for a cUrl request.
  *
@@ -54,9 +53,45 @@ class WebRequest {
 
     /**
      *
+     * @var array
+     */
+    protected $cookies;
+    
+    /**
+     *
+     * @var array
+     */
+    protected $postVariables;    
+    
+    /**
+     *
      * @var string
      */
     protected $body;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $failOnError;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $timeOutInSeconds;
+    
+    /**
+     *
+     * @var int
+     */
+    protected $returnTransfer;
+    
+    /**
+     *
+     * @var string
+     */
+    protected $referrer;
 
     /**
      *
@@ -71,6 +106,70 @@ class WebRequest {
         $this->password = null;
         $this->variables = array();
         $this->body = array();
+        $this->failOnError = 1;
+        $this->timeOutInSeconds = 20;
+        $this->returnTransfer = 1;
+        $this->referrer = null;
+        $this->cookies = array();
+        $this->postVariables = array();
+    }
+    
+    public function setPostVariables($postVariables) {
+        $this->postVariables = $postVariables;
+    }
+    
+    public function getPostVariables() {
+        return $this->postVariables;
+    }
+    
+    public function setCookies($cookies) {
+        $this->cookies = $cookies;
+    }
+    
+    public function getCookies() {
+        return $this->cookies;
+    }
+    
+    public function addCookie($cookie) {
+        $this->cookies[] = $cookie;
+        
+        return $this;
+    }
+    
+    public function setReferrer($referrer) {
+        $this->referrer = $referrer;
+    }
+    
+    public function getReferrer() {
+        return $this->referrer;
+    }
+    
+    public function setReturnTransfer($returnTransfer) {
+        $this->returnTransfer = $returnTransfer;
+    }
+    
+    public function getReturnTransfer() {
+        return $this->returnTransfer;
+    }
+    
+    public function setTimeoutInSeconds($timeOutInSeconds) {
+        $this->timeOutInSeconds = $timeOutInSeconds;
+    }
+    
+    public function getTimeoutInSeconds() {
+        return $this->timeOutInSeconds;
+    }
+    
+    public function getFailOnError() {
+        return $this->failOnError;
+    }
+    
+    public function setFailOnError($failOnError) {
+        $this->failOnError = $failOnError();
+    }
+    
+    public function getFailOnError() {
+        return $this->failOnError;
     }
 
     public function getUrl() {
@@ -96,7 +195,7 @@ class WebRequest {
         return null;
     }
 
-    public function setHeader($header, $value) {
+    public function addHeader($header, $value) {
         $this->headers[$header] = $value;
     }
 
@@ -218,13 +317,43 @@ class WebRequest {
         $optionsArray[CURLOPT_URL] = $this->url;
         $optionsArray[CURLOPT_RETURNTRANSFER] = true;
         $optionsArray[CURLINFO_HEADER_OUT] = true;
+        $optionsArray[CURLOPT_FAILONERROR] = $this->failOnError;
+        $optionsArray[CURLOPT_TIMEOUT] = $this->timeOutInSeconds;
+        $optionsArray[CURLOPT_RETURNTRANSFER] = $this->returnTransfer;
+        $optionsArray[CURLOPT_HEADER] = 1;
+        
+        // Conditionally set the referrer
+        if($this->referrer != null) {
+            $optionsArray[CURLOPT_REFERER] = $this->referrer;
+        }
+        
+        // Conditionally set cookies
+        if(!empty($this->cookies)) {
+            $cookieString = '';
+            foreach($this->cookies as $key => $value) {
+                if(Arr::is($value)) {
+                    $cookieString = $key.'='.$value['value'].'; ';
+                }
+                else {
+                    $cookieString = $key.'='.$value.'; ';
+                }
+            }
+            if(!empty($cookieString)) {
+                $optionsArray[CURLOPT_COOKIE] = $cookieString;
+            }
+        }
+        
+        // Conditionally set post variables
+        if(!empty($this->postVariables)) {
+            $optionsArray[CURLOPT_POSTFIELDS] = $this->postVariables;
+        }
 
-        // set a username and password
+        // Set a username and password
         if($this->username != null && $this->password != null) {
             $optionsArray[CURLOPT_USERPWD] = $this->username.':'.$this->password;
         }
 
-        // set the headers
+        // Set the headers
         if($this->headers != null && count($this->headers) > 0) {
             // build the headers the way curl wants them...
             $curlHeaders = array();
@@ -233,22 +362,31 @@ class WebRequest {
             }
             $optionsArray[CURLOPT_HTTPHEADER] = $curlHeaders;
         }
+        
+        
 
-        // set all of the options
+        // Set all of the options
         curl_setopt_array($curl, $optionsArray);
-
-        // run the request
+        
+        // Run the request
         $response = curl_exec($curl);
+        
+        // Figure out where the header ends
+        $headerEndPosition = String::position("\r\n\r\n", $response);
 
-        // get the meta info
-        $curlErrno = curl_errno($curl);
+        // Separate the header from the body
+        $responseHeader = String::sub($response, 0, $headerEndPosition);
+        $responseBody = String::sub($response, $headerEndPosition + 4, String::length($request));
+
+        // Get the meta info
+        $curlErrorNumber = curl_errno($curl);
         $curlError = curl_error($curl);
         $curlInfoArray = curl_getinfo($curl);
 
-        // close curl
+        // Close curl
         curl_close($curl);
 
-        return new WebResponse($curlErrno, $curlError, $curlInfoArray, $response);
+        return new WebResponse($curlErrorNumber, $curlError, $curlInfoArray, $responseHeaders, $responseBody);
     }
 }
 

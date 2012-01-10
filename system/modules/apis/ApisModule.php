@@ -37,20 +37,28 @@ class ApisModule extends Module {
             foreach($settings['apis'] as $apiName => $api) {
                 // If the API is enabled
                 if($api['status'] == 'enabled') {
-                    // Include the API files
-                    foreach($api['classes'] as $className => $file) {
-                        // Handle Project files
-                        if(String::startsWith('Project:', $file)) {
-                            Project::addAutoLoadClasses(array($className => String::replace('Project:', '', $file)), 'project');
-                        }
-                        // Handle instance files
-                        else {
-                            Project::addAutoLoadClasses(array($className => $file), 'instance');
-                        }
-                        
-                        // Run the initialize function if it exists, pass in settings
-                        if(Object::methodExists('initialize', $className)) {
-                            call_user_func(array($className, 'initialize'), $api['settings']);
+                    // Try to include the API if a file exists for it (this is a Project convention)
+                    $potentialClassFile = Project::getInstancePath().'controllers/apis/'.String::stripSpaces(String::camelCaseToTitle($apiName.'Api.php'));
+                    if(File::exists($potentialClassFile)) {
+                        Project::requireOnce($potentialClassFile);
+                    }
+                
+                    // Include the explicit API files
+                    if(isset($api['classes']) && Arr::is($api['classes'])) {
+                        foreach($api['classes'] as $className => $file) {
+                            // Handle Project files
+                            if(String::startsWith('Project:', $file)) {
+                                Project::addAutoLoadClasses(array($className => String::replace('Project:', '', $file)), 'project');
+                            }
+                            // Handle instance files
+                            else {
+                                Project::addAutoLoadClasses(array($className => $file), 'instance');
+                            }
+
+                            // Run the initialize function if it exists, pass in settings
+                            if(Object::methodExists('initialize', $className)) {
+                                call_user_func(array($className, 'initialize'), $api['settings']);
+                            }
                         }
                     }
                 }

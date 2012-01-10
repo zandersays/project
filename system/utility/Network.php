@@ -107,125 +107,18 @@ class Network {
         return $return;
     }
 
+    // Shortcut method for WebRequest class
     public static function webRequest($url, $options = array()) {
-        // Variables
-        $headers = isset($options['headers']) ? $options['headers'] : array();
-        $failOnError = isset($options['failOnError']) ? $options['failOnError'] : 1;
-        $timeout = isset($options['timeout']) ? $options['timeout'] : 20; // Timeout in seconds
-        $returnTransfer = isset($options['returnTransfer']) ? $options['returnTransfer'] : 1;
-        $post = isset($options['post']) ? $options['post'] : array();
-        $referrer = isset($options['referrer']) ? $options['referrer'] : null;
-        $cookies = isset($options['cookies']) ? $options['cookies'] : array();
+        $webRequest = new WebRequest($url);
 
-        // Start the handler
-        $curlHandler = curl_init();
-
-        // Set the URL
-        curl_setopt($curlHandler, CURLOPT_URL, $url);
-
-        // Headers
-        if(!empty($headers)) {
-            curl_setopt($curlHandler, CURLOPT_HTTPHEADER, $headers);
-        }
-
-        // Fail on error
-        curl_setopt($curlHandler, CURLOPT_FAILONERROR, $failOnError);
-
-        // Timeout
-        curl_setopt($curlHandler, CURLOPT_TIMEOUT, $timeout);
-
-        // Return transfer
-        curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, $returnTransfer);
-
-        // Post data
-        if(!empty($post)) {
-            curl_setopt($curlHandler, CURLOPT_POSTFIELDS, $post);
-        }
-
-        // Referrer
-        if(!empty($referrer)) {
-            curl_setopt($curlHandler, CURLOPT_REFERER, $referrer);
-        }
-
-        // Cookies
-        if(!empty($cookies)) {
-            $cookieString = '';
-            foreach($cookies as $key => $value) {
-                if(Arr::is($value)) {
-                    $cookieString = $key.'='.$value['value'].'; ';
-                }
-                else {
-                    $cookieString = $key.'='.$value.'; ';
-                }
-            }
-            if(!empty($cookieString)) {
-                curl_setopt($curlHandler, CURLOPT_COOKIE, $cookieString);
+        // Run all the setters provided via the options string
+        foreach($options as $optionKey => $optionValue) {
+            if(Object::methodExists('set'.String::upperFirstCharacter($optionKey), $webRequest)) {
+                $webRequest->{'set'.String::upperFirstCharacter($optionKey)}($optionValue);
             }
         }
-
-        // Make sure the header is returned
-        curl_setopt($curlHandler, CURLOPT_HEADER, 1);
-
-        // Run the request
-        $request = curl_exec($curlHandler);
-
-        // Figure out where the header ends
-        $headerEndPosition = String::position("\r\n\r\n", $request);
-
-        // Separate the header from the body
-        $header = String::sub($request, 0, $headerEndPosition);
-        $body = String::sub($request, $headerEndPosition + 4, String::length($request));
-
-        // Parse the headers
-        $headerArray = String::explode("\r\n", $header);
-
-        // Get the HTTP status
-        $httpStatus = $headerArray[0];
-        $headerArray[0] = null;
-        $headerArray = Arr::filter($headerArray);
-
-        // Get the HTTP status code
-        $httpStatusCode = String::replace('HTTP/1.1 ', '', $httpStatus);
-        $httpStatusCode = String::replace('HTTP/1.0 ', '', $httpStatusCode);
-        $httpStatusCode = String::sub($httpStatusCode, 0, 3);
-
-        // Get the rest of the headers and parse the cookies
-        $headers = array();
-        $cookies = array();
-        foreach($headerArray as $headerLine) {
-            // Handle cookies
-            if(String::startsWith('Set-Cookie: ', $headerLine)) {
-                $cookies = Arr::merge($cookies, Cookie::parse($headerLine));
-            }
-            else {
-                $headerLine = String::explode(': ', $headerLine);
-                $headers[$headerLine[0]] = $headerLine[1];
-            }
-        }
-
-        if(!$request) {
-            $response = array(
-                'status' => 'failure',
-                'message' => 'CURL error '.curl_errno($curlHandler).': '.curl_error($curlHandler),
-                'header' => $header,
-                'httpStatus' => $httpStatus,
-                'httpStatusCode' => $httpStatusCode,
-                'cookies' => $cookies,
-            );
-        }
-        else {
-            $response = array(
-                'status' => 'success',
-                'body' => $body,
-                'header' => $header,
-                'headers' => $headers,
-                'httpStatus' => $httpStatus,
-                'httpStatusCode' => $httpStatusCode,
-                'cookies' => $cookies,
-            );
-        }
-
-        return $response;
+        
+        return $webRequest->execute()->toArray();
     }
 }
 

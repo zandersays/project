@@ -183,6 +183,10 @@ class String {
     static function stripTags($string, $allowedTags = null) {
         return strip_tags($string, $allowedTags);
     }
+    
+    static function stripSpaces($string) {
+        return String::replace(' ', '', $string);
+    }
 
     static function removeSlashes($string) {
         return self::stripSlashes($string);

@@ -13,7 +13,7 @@ class WebResponse {
      *
      * @var int
      */
-    protected $curlErrno;
+    protected $curlErrorNumber;
     
     /**
      *
@@ -37,7 +37,7 @@ class WebResponse {
      *
      * @var int
      */
-    protected $httpCode;
+    protected $httpStatusCode;
     
     /**
      *
@@ -157,21 +157,42 @@ class WebResponse {
      *
      * @var string
      */
-    protected $response;
+    protected $responseHeader;
+
+    /**
+     *
+     * @var array
+     */
+    protected $responseHeaderArray;
     
     /**
      *
-     * @param int $curlErrno
+     * @var array
+     */
+    protected $responseCookieArray;    
+    
+    /**
+     *
+     * @var string
+     */
+    protected $responseBody;
+    
+
+    
+    /**
+     *
+     * @param int $curlErrorNumber
      * @param string $curlError
      * @param array $curlInfoArray
-     * @param string $responseString 
+     * @param array $responseHeaders
+     * @param string $responseBody
      */
-    public function __construct($curlErrno, $curlError, $curlInfoArray, $responseString) {
-        $this->curlErrno = $curlErrno;
+    public function __construct($curlErrorNumber, $curlError, $curlInfoArray, $responseHeader, $responseBody) {
+        $this->curlErrorNumber = $curlErrorNumber;
         $this->curlError = $curlError;        
         $this->url = $curlInfoArray['url'];
         $this->contentType = $curlInfoArray['content_type'];
-        $this->httpCode = $curlInfoArray['http_code'];
+        $this->httpStatusCode = $curlInfoArray['http_code'];
         $this->headerSize = $curlInfoArray['header_size'];
         $this->requestSize = $curlInfoArray['request_size'];
         $this->fileTime = $curlInfoArray['filetime'];
@@ -191,7 +212,12 @@ class WebResponse {
         $this->redirectTime = $curlInfoArray['redirect_time'];        
         $this->certInfo = $curlInfoArray['certinfo'];
         $this->requestHeader = $curlInfoArray['request_header'];
-        $this->response = $responseString;
+        $this->responseHeader = $responseHeader;
+        $this->responseHeaderArray = $this->getResponseHeaderArray();
+        $this->responseCookieArray = $this->getResponseCookieArray();
+        $this->responseBody = $responseBody;
+        
+        return $this;
     }
     
     /**
@@ -199,7 +225,22 @@ class WebResponse {
      * @return string
      */
     public function __toString() {
-        return 'WebResponse: {Url:'.$this->url.'}, {Header:'.$this->requestHeader.'}, {HTTP Code:'.$this->httpCode.'}, {Response:'.$this->getResponse().'}';
+        return 'WebResponse: {Url:'.$this->url.'}, {Header:'.$this->requestHeader.'}, {HTTP Code:'.$this->httpStatusCode.'}, {Response:'.$this->getResponseBody().'}';
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function toArray() {
+        $array = array();
+        foreach($this as $key => $value) {
+            $array[$key] = $value;
+        }
+        
+        $array['responseHeaderArray'] = $this->getResponseHeaderArray();
+        
+        
     }
     
     /**
@@ -207,7 +248,7 @@ class WebResponse {
      * @return boolean
      */
     public function errorOccurred() {
-        return !is_string($this->response) || $this->curlErrno != 0;
+        return !is_string($this->response) || $this->curlErrorNumber != 0;
     }
     
     /**
@@ -215,7 +256,7 @@ class WebResponse {
      * @return int
      */
     public function getCurlErrno() {
-        return $this->curlErrno;
+        return $this->curlErrorNumber;
     }
 
     /**
@@ -247,7 +288,7 @@ class WebResponse {
      * @return int
      */
     public function getHttpCode() {
-        return $this->httpCode;
+        return $this->httpStatusCode;
     }
        
     /**
@@ -406,11 +447,57 @@ class WebResponse {
      *
      * @return string
      */
-    public function getResponse() {
-        if($this->response === false) {
+    public function getResponseBody() {
+        if($this->responseBody === false) {
             return '';
         }
-        return $this->response;
+        return $this->responseBody;
+    }
+    
+    /**
+     *
+     * @return string
+     */
+    public function getResponseHeader() {
+        return $this->responseHeader;
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getResponseCookieArray() {
+        // Parse the header string
+        $responseHeaderArray = String::explode("\r\n", $this->responseHeader);
+        $responseHeaderArray = Arr::filter($responseHeaderArray);
+        
+        $responseCookieArray = array();
+        foreach($responseHeaderArray as $responseHeaderLine) {
+            if(String::startsWith('Set-Cookie: ', $responseHeaderLine)) {
+                $responseCookieArray = $responseCookieArray[] = Cookie::parse($responseHeaderLine);
+            }
+        }
+        
+        return $responseCookieArray;
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getResponseHeaderArray() {
+        // Parse the header string
+        $responseHeaderArray = String::explode("\r\n", $this->responseHeader);
+        $responseHeaderArray = Arr::filter($responseHeaderArray);
+        
+        $responseHeaderArray = array();
+        
+        foreach($responseHeaderArray as $headerLine) {
+            $headerLine = String::explode(': ', $headerLine);
+            $headers[$headerLine[0]] = $headerLine[1];
+        }
+        
+        return $responseHeaderArray;
     }
 }
 
