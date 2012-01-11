@@ -225,6 +225,9 @@ abstract class FormComponent {
             if(!isset($options['options']['instanceOptions']['removeButtonText'])) {
                 $options['options']['instanceOptions']['removeButtonText'] = 'Remove';
             }
+            if(!isset($options['options']['instanceOptions']['removeButtonText'])) {
+                $options['options']['instanceOptions']['removeButtonText'] = 'function(){}';
+            }
         }
         
         
