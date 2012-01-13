@@ -150,7 +150,17 @@ class String {
     }
 
     static function replace($search, $replace, $string, $count = null) {
-        return str_replace($search, $replace, $string, $count);
+        // The function str_replace takes the option paramter 'count' and assigns the total number of
+        // replaced occurences to the variable passed. This is dumb. So here, we use the count variable
+        // to limit the number of replacements occuring using replaceOccurences.
+        
+        // If they want to replace occurrences
+        if($count != null) {
+            return self::replaceOccurences($search, $replace, $string, $count);
+        }
+        else {
+            return str_replace($search, $replace, $string, $count);    
+        }        
     }
 
     static function replaceOccurences($search, $replace, $string, $limit) {

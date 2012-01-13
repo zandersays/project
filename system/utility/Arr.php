@@ -28,7 +28,7 @@ class Arr {
         $newArray = array();
 
         foreach($array as $key => $value) {
-            if(Arr::is($value)) {
+            if(Arr::is($value) || Object::is($value)) {
                 $newArray[String::underscoresToCamelCase($key)] = Arr::underscoreKeysToCamelCase($value);
             }
             else {

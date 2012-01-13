@@ -177,6 +177,12 @@ class WebResponse {
      */
     protected $responseBody;
     
+    /**
+     *
+     * @var array
+     */
+    protected $responseBodyDecoded;
+    
 
     
     /**
@@ -216,7 +222,13 @@ class WebResponse {
         $this->responseHeaderArray = $this->getResponseHeaderArray();
         $this->responseCookieArray = $this->getResponseCookieArray();
         $this->responseBody = $responseBody;
-        
+        if(Json::is($this->responseBody)) {
+            $this->responseBodyDecoded = Json::decode($this->responseBody);
+        }
+        else {
+            $this->responseBodyDecoded = array();    
+        }        
+                
         return $this;
     }
     
@@ -238,9 +250,7 @@ class WebResponse {
             $array[$key] = $value;
         }
         
-        $array['responseHeaderArray'] = $this->getResponseHeaderArray();
-        
-        
+        return $array;
     }
     
     /**
@@ -468,13 +478,12 @@ class WebResponse {
      */
     public function getResponseCookieArray() {
         // Parse the header string
-        $responseHeaderArray = String::explode("\r\n", $this->responseHeader);
-        $responseHeaderArray = Arr::filter($responseHeaderArray);
+        $responseHeaderLines = String::explode("\r\n", $this->responseHeader);
         
         $responseCookieArray = array();
-        foreach($responseHeaderArray as $responseHeaderLine) {
+        foreach($responseHeaderLines as $responseHeaderLine) {
             if(String::startsWith('Set-Cookie: ', $responseHeaderLine)) {
-                $responseCookieArray = $responseCookieArray[] = Cookie::parse($responseHeaderLine);
+                $responseCookieArray[] = Cookie::parse($responseHeaderLine);
             }
         }
         
@@ -487,14 +496,14 @@ class WebResponse {
      */
     public function getResponseHeaderArray() {
         // Parse the header string
-        $responseHeaderArray = String::explode("\r\n", $this->responseHeader);
-        $responseHeaderArray = Arr::filter($responseHeaderArray);
+        $responseHeaderLines = String::explode("\r\n", $this->responseHeader);
         
         $responseHeaderArray = array();
-        
-        foreach($responseHeaderArray as $headerLine) {
-            $headerLine = String::explode(': ', $headerLine);
-            $headers[$headerLine[0]] = $headerLine[1];
+        foreach($responseHeaderLines as $responseHeaderLine) {
+            if(String::contains(': ', $responseHeaderLine)) {
+                $responseHeaderLine = String::explode(': ', $responseHeaderLine);
+                $responseHeaderArray[$responseHeaderLine[0]] = $responseHeaderLine[1];
+            }
         }
         
         return $responseHeaderArray;

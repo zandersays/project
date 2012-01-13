@@ -168,10 +168,6 @@ class WebRequest {
         $this->failOnError = $failOnError();
     }
     
-    public function getFailOnError() {
-        return $this->failOnError;
-    }
-
     public function getUrl() {
         return $this->url;
     }
@@ -222,8 +218,13 @@ class WebRequest {
         return $this->variables;
     }
 
-    public function setVariables($requestVariables) {
-        $this->variables = $requestVariables;
+    public function setVariables($requestVariables, $removeEmptyVariables = false) {
+        // Remove any null variables
+        if($removeEmptyVariables) {
+            $requestVariables = Arr::filter($requestVariables);
+        }
+                
+        $this->variables = $requestVariables;    
     }
 
     public function getUsername() {
@@ -252,10 +253,14 @@ class WebRequest {
 
     protected function createQueryString(Array $variables) {
         $string = '';
+        
         foreach($variables as $key => $value) {
             $string .= '&'.$key.'='.$value;
         }
-        return String::replace('&', '?', $string, 1);
+        
+        $string = String::replace('&', '?', $string, 1);
+       
+        return $string;
     }
 
     /**
@@ -308,7 +313,7 @@ class WebRequest {
                 break;
         }
 
-        // set the query string variables if we need to
+        // Set the query string variables if we need to
         if(count($this->variables) > 0) {
             $this->url .= $this->createQueryString($this->variables);
         }
@@ -363,8 +368,6 @@ class WebRequest {
             $optionsArray[CURLOPT_HTTPHEADER] = $curlHeaders;
         }
         
-        
-
         // Set all of the options
         curl_setopt_array($curl, $optionsArray);
         
@@ -376,7 +379,7 @@ class WebRequest {
 
         // Separate the header from the body
         $responseHeader = String::sub($response, 0, $headerEndPosition);
-        $responseBody = String::sub($response, $headerEndPosition + 4, String::length($request));
+        $responseBody = String::sub($response, $headerEndPosition + 4, String::length($response));
 
         // Get the meta info
         $curlErrorNumber = curl_errno($curl);
@@ -386,7 +389,7 @@ class WebRequest {
         // Close curl
         curl_close($curl);
 
-        return new WebResponse($curlErrorNumber, $curlError, $curlInfoArray, $responseHeaders, $responseBody);
+        return new WebResponse($curlErrorNumber, $curlError, $curlInfoArray, $responseHeader, $responseBody);
     }
 }
 
