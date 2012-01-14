@@ -276,7 +276,7 @@ class File {
     }
 
     static function content($path) {
-        //print_r(debug_backtrace());
+        
         return file_get_contents($path);
     }
 

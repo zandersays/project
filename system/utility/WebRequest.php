@@ -100,7 +100,7 @@ class WebRequest {
      */
     public function __construct($url = '', $method = WebRequest::Get) {
         $this->url = $url;
-        $this->method = $method;
+        $this->method = String::upper($method);
         $this->headers = array();
         $this->username = null;
         $this->password = null;
@@ -217,7 +217,7 @@ class WebRequest {
     public function getVariables() {
         return $this->variables;
     }
-
+    
     public function setVariables($requestVariables, $removeEmptyVariables = false) {
         // Remove any null variables
         if($removeEmptyVariables) {
@@ -320,13 +320,13 @@ class WebRequest {
 
         // set all of the base options
         $optionsArray[CURLOPT_URL] = $this->url;
-        $optionsArray[CURLOPT_RETURNTRANSFER] = true;
-        $optionsArray[CURLINFO_HEADER_OUT] = true;
         $optionsArray[CURLOPT_FAILONERROR] = $this->failOnError;
         $optionsArray[CURLOPT_TIMEOUT] = $this->timeOutInSeconds;
+        $optionsArray[CURLOPT_FOLLOWLOCATION] = true;
         $optionsArray[CURLOPT_RETURNTRANSFER] = $this->returnTransfer;
         $optionsArray[CURLOPT_HEADER] = 1;
-        
+        $optionsArray[CURLINFO_HEADER_OUT] = true;
+                
         // Conditionally set the referrer
         if($this->referrer != null) {
             $optionsArray[CURLOPT_REFERER] = $this->referrer;
@@ -374,17 +374,17 @@ class WebRequest {
         // Run the request
         $response = curl_exec($curl);
         
-        // Figure out where the header ends
-        $headerEndPosition = String::position("\r\n\r\n", $response);
-
-        // Separate the header from the body
-        $responseHeader = String::sub($response, 0, $headerEndPosition);
-        $responseBody = String::sub($response, $headerEndPosition + 4, String::length($response));
-
         // Get the meta info
         $curlErrorNumber = curl_errno($curl);
         $curlError = curl_error($curl);
         $curlInfoArray = curl_getinfo($curl);
+        
+        // Figure out where the header ends
+        $headerEndPosition = $curlInfoArray['header_size'];
+
+        // Separate the header from the body
+        $responseHeader = String::sub($response, 0, $headerEndPosition);
+        $responseBody = String::sub($response, $headerEndPosition, String::length($response));
 
         // Close curl
         curl_close($curl);
