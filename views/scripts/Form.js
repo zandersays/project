@@ -999,13 +999,13 @@ Form = Class.extend({
                         //self.currentFormPage.options.onScrollTo.onAfter();
                     }
                     
-                    //set hash for history storage
+                    // Set hash for history storage
                     if($.address && self.currentFormPageIdArrayIndex !== 0){
                         $.address.value(self.currentFormPage.id);    
-                    } else{
-                        $.address.value('');
                     }
-                    
+                    else if($.address) {
+                        $.address.value('');
+                    }                    
 
                     // Setup the controls
                     self.setupControl();
