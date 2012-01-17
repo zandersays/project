@@ -217,7 +217,7 @@ class WebResponse {
         $this->startTransferTime = $curlInfoArray['starttransfer_time'];
         $this->redirectTime = $curlInfoArray['redirect_time'];        
         $this->certInfo = $curlInfoArray['certinfo'];
-        $this->requestHeader = $curlInfoArray['request_header'];
+        $this->requestHeader = isset($curlInfoArray['request_header']) ? $curlInfoArray['request_header'] : false;
         $this->responseHeader = $responseHeader;
         $this->responseHeaderArray = $this->getResponseHeaderArray();
         $this->responseCookieArray = $this->getResponseCookieArray();
