@@ -108,7 +108,7 @@ abstract class FormComponent {
         if($this->value !== null) {
             // Perform the validation
             $this->reformValidations();
-
+            
             // If you have instance values
             if($this->hasInstanceValues()) {
                 // Walk through each of the instance values
@@ -260,7 +260,7 @@ abstract class FormComponent {
     abstract function __toString();
     
     function hasInstanceValues() {
-        return is_array($this->value);
+        return $this->instanceOptions != null && is_array($this->value);
     }
 
     function generateComponentDiv($includeLabel = true) {

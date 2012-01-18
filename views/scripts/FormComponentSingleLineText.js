@@ -404,10 +404,13 @@ FormComponentSingleLineText = FormComponent.extend({
     },
 
     addEmptyValue: function() {
+        
         var emptyValue = this.options.emptyValue,
         input = this.component.find('input');
-        input.addClass('defaultValue');
-        input.val(emptyValue);
+        if(input.val() === ''){
+            input.addClass('defaultValue');
+            input.val(emptyValue);
+        }
 
         var target ='';
         input.focus(function(event){

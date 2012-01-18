@@ -381,7 +381,7 @@ class WebRequest {
         
         // Figure out where the header ends
         $headerEndPosition = $curlInfoArray['header_size'];
-
+        
         // Separate the header from the body
         $responseHeader = String::sub($response, 0, $headerEndPosition);
         $responseBody = String::sub($response, $headerEndPosition, String::length($response));

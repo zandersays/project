@@ -174,6 +174,17 @@ Form = Class.extend({
                             onScrollToFunctions.onAfter();
                         }
                     }
+                    if(previousPage.options.onScrollAway) {
+                        var onScrollAwayFunctions = previousPage.options.onScrollAway;
+                        if(onScrollAwayFunctions.onBefore != undefined && typeof onScrollAwayFunctions.onBefore == 'function') {
+                            //console.log('Running ', previousPage.id, ' onBefore');
+                            onScrollAwayFunctions.onBefore();
+                        }
+                        if(onScrollAwayFunctions.onAfter != undefined &&  typeof onScrollAwayFunctions.onAfter == 'function') {
+                            //console.log('Running ', previousPage.id, ' onAfter');
+                            onScrollAwayFunctions.onAfter();
+                        }
+                    }
                 });
             }); 
         } 

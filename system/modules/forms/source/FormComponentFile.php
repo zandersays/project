@@ -29,7 +29,7 @@ class FormComponentFile extends FormComponent {
     }
 
     function hasInstanceValues() {
-        return isset($this->value[0]);
+        return $this->instanceOptions != null && isset($this->value[0]);
     }
 
     function getOptions() {

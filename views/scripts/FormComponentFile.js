@@ -630,9 +630,7 @@ FileDropZone = Class.extend({
             // Hide the drop zone if it is not supported
             element.hide();
             
-            if(console != undefined){
-                console.log('File dropping is not supported.');
-            }
+            //console.log('File dropping is not supported.');
             
             return false;
         }
