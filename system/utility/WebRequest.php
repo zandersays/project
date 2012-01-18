@@ -106,7 +106,7 @@ class WebRequest {
         $this->password = null;
         $this->variables = array();
         $this->body = array();
-        $this->failOnError = 1;
+        $this->failOnError = 0;
         $this->timeOutInSeconds = 20;
         $this->returnTransfer = 1;
         $this->referrer = null;
@@ -371,13 +371,17 @@ class WebRequest {
         // Set all of the options
         curl_setopt_array($curl, $optionsArray);
         
-        // Run the request
+        // Run the request        
         $response = curl_exec($curl);
+        
+        
         
         // Get the meta info
         $curlErrorNumber = curl_errno($curl);
         $curlError = curl_error($curl);
         $curlInfoArray = curl_getinfo($curl);
+        
+        
         
         // Figure out where the header ends
         $headerEndPosition = $curlInfoArray['header_size'];
@@ -388,6 +392,7 @@ class WebRequest {
 
         // Close curl
         curl_close($curl);
+        
 
         return new WebResponse($curlErrorNumber, $curlError, $curlInfoArray, $responseHeader, $responseBody);
     }
