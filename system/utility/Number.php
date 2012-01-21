@@ -9,6 +9,14 @@ class Number {
     static function format($number, $precision = null) {
         return number_format($number, $precision);
     }
+    
+    static function shiftDecimalLeft($number, $decimalPlaces) {
+        for($i = 0; $i < $decimalPlaces; $i++) {
+            $number = $number / 10;
+        }
+        
+        return $number;
+    }
 
     static function formatMoney($number, $precision = 0, $format = '$%i') {
         // Need to code for precision here

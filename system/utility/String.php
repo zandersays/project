@@ -159,7 +159,7 @@ class String {
             return self::replaceOccurences($search, $replace, $string, $count);
         }
         else {
-            return str_replace($search, $replace, $string, $count);    
+            return str_replace($search, $replace, $string);    
         }        
     }
 

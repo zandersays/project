@@ -626,7 +626,7 @@ Form = Class.extend({
                     target.blur();
 
                     // Handle if you are on the splash page
-                    if(self.options.splashPage !== null && self.currentFormPage.id == self.options.splashPage.formPage.id) {
+                    if(self.options.splashPage !== false && self.currentFormPage.id == self.options.splashPage.formPage.id) {
                         self.options.splashPage.controlSplashButton.trigger('click');
                     }
                     else {
