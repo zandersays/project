@@ -36,6 +36,8 @@ ul, ol {
 #topWrapper {
     padding: 1em 1em 1.5em 1em;
     background: -moz-linear-gradient(center top, #FFF 8px, #F2F2F2 24px, #F2F2F2 100%) repeat scroll 0 0 #F2F2F2;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(1%,#ffffff), color-stop(100%,#f2f2f2)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #ffffff 1%,#f2f2f2 100%); /* Chrome10+,Safari5.1+ */
 }
     #header {
         padding: 0 0 0 0;

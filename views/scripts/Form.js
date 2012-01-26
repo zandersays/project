@@ -110,7 +110,7 @@ Form = Class.extend({
         else {
             var startingPageIdIndex = 0;
             if(this.options.startingPageId) {
-               startingPageIdIndex = this.formPageIdArray.indexOf(this.options.startingPageId);    
+               startingPageIdIndex = this.formPageIdArray.indexOf(this.options.startingPageId);
             }
             
             this.currentFormPageIdArrayIndex = startingPageIdIndex;

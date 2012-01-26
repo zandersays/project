@@ -68,7 +68,7 @@ class FormSection {
             else if($key == 'title') {
                 $formSectionInstance->{$key} = $value;
                 if(String::contains('</', $formSectionInstance->title)) {
-                    $formSectionInstance->title = String::replace('</', ' ('.$instanceIndex.')</', $formSectionInstance->title, 1);
+                    $formSectionInstance->title = String::replace('<\/', ' ('.$instanceIndex.')</', $formSectionInstance->title, 1);
                 }
                 else {
                     $formSectionInstance->title = $formSectionInstance->title.' ('.$instanceIndex.')';
