@@ -24,6 +24,7 @@ class FormComponentSingleLineText extends FormComponent {
         $this->mask = '';
         $this->emptyValue = '';
         $this->onKeyUp = '';
+        $this->prependLabel = '';
 
         // Initialize the abstract FormComponent object
         $this->initialize($optionArray);
@@ -66,7 +67,16 @@ class FormComponentSingleLineText extends FormComponent {
     function __toString() {
         // Generate the component div
         $div = $this->generateComponentDiv();
-
+        
+        if(!empty($this->prependLabel)){
+            $prependLabel = new HtmlElement('span', array(
+                'id' => $this->id.'-prependLabel',    
+                'class' => 'formPrependLabel'
+            ));
+            $prependLabel->text($this->prependLabel);
+            $div->append($prependLabel);
+        }
+        
         // Add the input tag
         $input = new HtmlElement('input', array(
             'type' => $this->type,
@@ -102,7 +112,19 @@ class FormComponentSingleLineText extends FormComponent {
         if(!empty($this->onKeyUp)) {
             $input->attr('onkeyup', $this->onKeyUp);
         }
+        if(!empty($this->appendLabel)){
+            $input->attr('class', ' formAppendLabel', true);    
+        }
         $div->append($input);
+        
+        if(!empty($this->appendLabel)){
+            $appendLabel = new HtmlElement('span', array(
+                'id' => $this->id.'-appendLabel',    
+                'class' => 'formAppendLabel'
+            ));
+            $appendLabel->text($this->appendLabel);
+            $div->append($appendLabel);
+        }
 
         if(!empty($this->subLabel)) {
             $div->append('<div class="formComponentSubLabel">'.$this->subLabel.'</div>');

@@ -122,6 +122,48 @@
 
 /* Component Type - SingleLineText */
 .form .formComponentSingleLineText input { width: 12em; }
+.form .formComponentSingleLineText .formPrependLabel { 
+    position: relative;  
+    background: #DDD;
+    border: 1px solid #BDBDBD;  
+    z-index: 2;  
+    float: left;  
+    display: block;  
+    width: auto;  
+    min-width: 16px;  
+    height: 16px;  
+    padding: 8px 4px 8px 8px;  margin-right: -1px;  font-weight: normal;    
+    color: #AAA; text-align: center;  text-shadow: 0 1px 0 white;  -webkit-border-radius: 4px 0 0 4px;  -moz-border-radius: 4px 0 0 4px;  border-radius: 4px 0 0 4px;
+    font-size: 14px;
+    line-height: 14px;
+ }
+ 
+ .form .formComponentSingleLineText span.formAppendLabel { 
+    position: relative;  
+    background: #DDD;
+    border: 1px solid #BDBDBD;  
+    z-index: 2;  
+    float: left;  
+    display: block;  
+    width: auto;  
+    min-width: 16px;  
+    height: 16px;  
+    padding: 8px 8px 8px 4px;  margin-left: -1px;  font-weight: normal;    
+    color: #AAA; text-align: center;  text-shadow: 0 1px 0 white;  -webkit-border-radius: 0 4px 4px 0;  -moz-border-radius: 0 4px 4px 0;  border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    line-height: 14px;
+ }
+ 
+ .form .formComponentSingleLineText .formPrependLabel + input  {
+     border-top-left-radius: 0px;
+     border-bottom-left-radius: 0px;
+ }
+ 
+ .form .formComponentSingleLineText input.formAppendLabel {
+     border-top-right-radius: 0px;
+     border-bottom-right-radius: 0px;
+ }
+ 
 
 /* Component Type - TextArea */
 .form .formComponentTextArea textarea { width: 24em; height: 12em; }
