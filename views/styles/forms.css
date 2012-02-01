@@ -157,12 +157,14 @@
  .form .formComponentSingleLineText .formPrependLabel + input  {
      border-top-left-radius: 0px;
      border-bottom-left-radius: 0px;
+     height: 16px;  
  }
  
  .form .formComponentSingleLineText input.formAppendLabel {
      border-top-right-radius: 0px;
      border-bottom-right-radius: 0px;
      float: left;
+     height: 16px;  
  }
  
 
