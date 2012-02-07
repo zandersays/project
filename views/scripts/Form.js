@@ -1351,6 +1351,7 @@ Form = Class.extend({
         }
         // Form passed processing
         else if(json.status == 'success'){
+            this.controlNextButton.text(this.options.submitButtonText);
             // Show a success page
             if(json.response.successPageHtml){
                 // Stop saving the form
@@ -1371,7 +1372,7 @@ Form = Class.extend({
                 if(this.formPageNavigator) {
                 this.formPageNavigator.hide();
                 }
-
+                
                 // Scroll to the page
                 formPageSuccess.scrollTo();
             }
@@ -1411,6 +1412,7 @@ Form = Class.extend({
             // Evaluate any failure or successful javascript
             if(json.response.successJs){
                 eval(json.response.successJs);
+                
             }
             else if(json.response.failureJs){
                 eval(json.response.failureJs);

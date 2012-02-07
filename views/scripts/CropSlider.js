@@ -29,9 +29,9 @@ var CropSlider = Class.extend({
         this.clicked = false;
         
         this.originalCss = { 
-            backgroundPosition: $(this.dragDiv).css('background-position'),
-            backgroundSize: $(this.dragDiv).css('background-size'),
-            background: $(this.dragDiv).css('background')
+            backgroundPosition: $(this.dragDiv).css('background-position') ? $(this.dragDiv).css('background-position') : '',
+            backgroundSize: $(this.dragDiv).css('background-size') ? $(this.dragDiv).css('background-size') : 'auto',
+            background: $(this.dragDiv).css('background') ? $(this.dragDiv).css('background') : ''
         }
         this.backgroundImage.hide();
         $(this.dragDiv).append(this.backgroundImage);
