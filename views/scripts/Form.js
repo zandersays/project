@@ -1227,12 +1227,12 @@ Form = Class.extend({
         formClone.append(formData);
         
         // Add any file components for submission
-        this.form.find('input:file:not(.ajaxHandled)').each(function(index, fileInput) {
+        this.form.find('input:file').not('.ajaxHandled').each(function(index, fileInput) {
             if($(fileInput).val() != '') {
                 // grab the IDs needed to pass
                 var sectionId = $(fileInput).closest('.formSection').attr('id');
                 var pageId = $(fileInput).closest('.formPage').attr('id');
-                var clone = $(fileInput).clone()
+                //var clone = $(fileInput).clone()
 
                 // do find out the section instance index
                 if($(fileInput).attr('id').match(/-section[0-9]+/)){
@@ -1249,7 +1249,7 @@ Form = Class.extend({
                         }
                         return true;
                     });
-                     clone.attr('name', clone.attr('name').replace(/-section[0-9]+/, '-section'+sectionInstance));
+                     fileInput.attr('name', fileInput.attr('name').replace(/-section[0-9]+/, '-section'+sectionInstance));
                 }
 
                 // do find out the component instance index
@@ -1265,11 +1265,11 @@ Form = Class.extend({
                         }
                         return true;
                     });
-                     clone.attr('name', clone.attr('name').replace(/-instance[0-9]+/, '-instance'+instance));
+                     fileInput.attr('name', fileInput.attr('name').replace(/-instance[0-9]+/, '-instance'+instance));
                 }
 
-                clone.attr('name', clone.attr('name')+':'+pageId+':'+sectionId);
-                clone.appendTo(formClone);
+                $(fileInput).attr('name', $(fileInput).attr('name')+':'+pageId+':'+sectionId);
+            $(fileInput).appendTo(formClone);
             }
         });
         

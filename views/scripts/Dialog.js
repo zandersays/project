@@ -258,7 +258,9 @@ var Dialog = Class.extend({
 
         // Show the wrapper
         //this.dialogWrapper.show();
-        this.dialogWrapper.fadeIn(150);
+        this.dialogWrapper.fadeIn(150, function(){
+            self.updatePosition();
+        });
 
         // Add window resize and scroll events
         this.window.resize(function(event) {

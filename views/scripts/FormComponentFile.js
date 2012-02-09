@@ -132,7 +132,15 @@ FormComponentFile = FormComponent.extend({
                 return options.value == '' || options.value.match(extensionType) ? 'success' : errorMessageArray;
             },
             'size' : function(options){
-                return true;
+                if(this.component.find('input:file')[0].files){
+                   var file = this.component.find('input:file')[0].files[0];
+                   if(file.size <= options.size){
+                       
+                   }
+                } else {
+                    return true;    
+                }
+                
             },
             'imageDimensions' : function(options){
                 return true;

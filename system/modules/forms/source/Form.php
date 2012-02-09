@@ -401,7 +401,7 @@ class Form {
        
         // Handle files
         if(!empty($fileArray)) {
-            //print_r($fileArray);
+            print_r($_FILES);
             
             foreach($fileArray as $formComponentId => $fileDataArray) {
                 $formComponentLocation = self::getFormComponentLocation($formComponentId);
