@@ -290,22 +290,27 @@ class WebRequest {
 
                 // for a curl put we have to create a file for it to 'PUT'
                 $encodedContent = $this->body;
+                if (empty($encodedContent)) {
+                    $encodedContent = '';
+                }
+                    
+                    // create the file to put
+                    $tempFile = fopen('php://temp/maxmemory:256000', 'w');
+                    if (!$tempFile) {
+                        throw new Exception('Error creating temp file for put operation');
+                    }
+                    if (!fwrite($tempFile, $encodedContent)) {
+                        throw new Exception('Error creating temp file for put operation');
+                    }
+                    if (fseek($tempFile, 0) == -1) {
+                        throw new Exception('Error creating temp file for put operation');
+                    }
 
-                // create the file to put
-                $tempFile = fopen('php://temp/maxmemory:256000', 'w');
-                if(!$tempFile) {
-                    throw Exception('Error creating temp file for put operation');
-                }
-                if(!fwrite($tempFile, $encodedContent)) {
-                    throw Exception('Error creating temp file for put operation');
-                }
-                if(fseek($tempFile, 0) == -1) {
-                    throw Exception('Error creating temp file for put operation');
-                }
-
-                $optionsArray[CURLOPT_BINARYTRANSFER] = true;
-                $optionsArray[CURLOPT_INFILE] = $tempFile;
-                $optionsArray[CURLOPT_INFILESIZE] = strlen($encodedContent);
+                    $optionsArray[CURLOPT_BINARYTRANSFER] = true;
+                    $optionsArray[CURLOPT_INFILE] = $tempFile;
+                    $optionsArray[CURLOPT_INFILESIZE] = strlen($encodedContent);
+                
+                
                 break;
 
             default:

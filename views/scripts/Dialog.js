@@ -103,7 +103,9 @@ var Dialog = Class.extend({
         $('body').children().last().after(this.dialogWrapper);
 
         // Position the dialog absolutely
-        this.dialog.css({'position':'absolute'});
+        this.dialog.css({
+            'position':'absolute'
+        });
 
         // TODO: Listen to the size of the modal changing and reposition
 
@@ -131,7 +133,9 @@ var Dialog = Class.extend({
     },
 
     setContent: function(content) {
-        this.dialog.css({'left': '-99999px'});
+        this.dialog.css({
+            'left': '-99999px'
+        });
         this.dialogContent.html(content);
         this.updatePosition();
     },
@@ -255,13 +259,34 @@ var Dialog = Class.extend({
         //this.dialogWrapper.find('button').click(function(event) {
         //    self.destroy();
         //});
-
+        
         // Show the wrapper
         //this.dialogWrapper.show();
-        this.dialogWrapper.fadeIn(150, function(){
-            self.updatePosition();
-        });
-
+        
+        if(this.dialogWrapper.find('.dialogContent img').length > 0){
+            this.dialogWrapper.css('visibility', 'hidden').show();
+            var image = this.dialogWrapper.find('.dialogContent img:first');
+            image.load(function(){
+                self.updatePosition();
+                self.dialogWrapper.hide().css('visibility', '');
+                self.dialogWrapper.fadeIn(150, function(){
+                    self.updatePosition();
+                });
+            });
+        } else {
+            
+            
+            this.dialogWrapper.fadeIn(150, function(){
+                self.updatePosition();
+            });    
+        }
+        
+            
+        
+        
+       
+        
+        
         // Add window resize and scroll events
         this.window.resize(function(event) {
             self.updatePosition();
@@ -280,8 +305,12 @@ var Dialog = Class.extend({
         var self = this;
 
         this.dialog.trigger('positionUpdated');
-        this.dialog.css({'left': self.getLeftMargin()});
-        this.dialog.css({'top': self.getTopMargin()});
+        this.dialog.css({
+            'left': self.getLeftMargin()
+            });
+        this.dialog.css({
+            'top': self.getTopMargin()
+            });
         if(this.options.modalOverlay) {
             this.modalOverlay.width(self.window.width()).height($(document).height());
         }
