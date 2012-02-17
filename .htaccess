@@ -1,0 +1,23 @@
+# Turn on URL rewriting
+RewriteEngine On
+RewriteBase /
+
+# Force directory requests to terminate with a forward slash
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{HTTPS}s ^on(s)|off
+RewriteRule [^/]$ http%1://%{HTTP_HOST}%{REQUEST_URI}/ [R=301,L]
+
+# All image, script, and style requests are directly read
+RewriteCond %{REQUEST_URI} !(\.php)
+RewriteRule ^images/(.*)$ views/images/$1?%{QUERY_STRING} [L]
+RewriteRule ^scripts/(.*)$ views/scripts/$1?%{QUERY_STRING} [L]
+RewriteRule ^styles/(.*)$ views/styles/$1?%{QUERY_STRING} [L]
+
+# Route null requests to provision tool
+RewriteRule ^$ provision/ [R=301,L]
+
+# All requests are routed through project
+RewriteCond %{REQUEST_URI} !(views/images|views/scripts|views/styles)
+RewriteCond %{REQUEST_URI} !project/unit-tests
+RewriteCond %{REQUEST_URI} !project/index.php
+RewriteRule ^(.*)$ project/index.php?project=/$1&%{QUERY_STRING} [L]

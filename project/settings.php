@@ -2,8 +2,8 @@
 $settings = array(
     'instances' => array(
         array(
-            'projectPath' => substr(dirname(__FILE__), 0, -9),
-            'path' => substr(dirname(__FILE__), 0, -9),
+            'projectPath' => substr(dirname(__FILE__), 0, -7),
+            'path' => substr(dirname(__FILE__), 0, -7),
             'accessPath' => null,
             'host' => $_SERVER['HTTP_HOST'],
             'id' => 'project',
