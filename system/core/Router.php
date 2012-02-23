@@ -228,7 +228,7 @@ class Router {
     }
 
     public static function redirect($path) {
-        header('Location: '.$path);
+        header('Location: '.$path); exit();
     }
     
     public static function getAnalytics() {
