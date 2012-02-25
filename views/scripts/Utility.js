@@ -1,7 +1,7 @@
 // Array function
 Array.prototype.clean = function(deleteValue) {
     for (var i = 0; i < this.length; i++) {
-        if (this[i] == deleteValue) {         
+        if (this[i] === deleteValue) {         
             this.splice(i, 1);
             i--;
         }
@@ -13,16 +13,25 @@ Array.prototype.clean = function(deleteValue) {
 // String functions
 String.prototype.startsWith = function(string) {
     return (this.indexOf(string) === 0);
-}
+};
+
 String.prototype.empty = function() {
     //console.log($.trim(this.valueOf()));
-    if($.trim(this.valueOf()) == '') {
+    if($.trim(this.valueOf()) === '') {
         return true;
     }
     else {
         return false;
     }
-}
+};
+
+String.prototype.camelCaseToDashes = function () {
+    return this.replace(/([A-Z])/g, function($1){return "-"+$1.toLowerCase();});
+};
+
+String.prototype.dashesToCamelCase = function() {
+	return this.replace(/(\-[a-z])/g, function($1){return $1.toUpperCase().replace('-','');});
+};
 
 String.prototype.replaceArray = function(find, replace) {
     var replaceString = this;
@@ -41,7 +50,7 @@ String.prototype.newLinesToParagraphTags = function(lineBreaks) {
     var string = this;
     var newString = '';
     // It is conceivable that people might still want single line-breaks without breaking into a new paragraph.
-    if(lineBreaks == true) {
+    if(lineBreaks === true) {
         newString = '<p>'+string.replaceArray(['([\n]{2})', '([^>])\n([^<])'], ["</p>\n<p>", "$1<br />$2"])+'</p>';
     }            
     else {
@@ -49,10 +58,10 @@ String.prototype.newLinesToParagraphTags = function(lineBreaks) {
     }
 
     return newString;
-}
+};
 String.prototype.newLinesToBreakTags = function() {
     return this.replace('\n', '<br />');
-}
+};
 // base64 String extensions
 String.prototype.base64Encode = function() {
     var output = "";
@@ -81,7 +90,7 @@ String.prototype.base64Encode = function() {
         output = output + _keyStr.charAt(enc1) + _keyStr.charAt(enc2) + _keyStr.charAt(enc3) + _keyStr.charAt(enc4);
     }
     return output;  
-}
+};
     
 String.prototype.base64Decode = function() {
     var output = "";
@@ -106,10 +115,10 @@ String.prototype.base64Decode = function() {
         //console.log(chr1, chr2, chr3);
         output = output + String.fromCharCode(chr1);
 
-        if (enc3 != 64) {
+        if (enc3 !== 64) {
             output = output + String.fromCharCode(chr2);
         }
-        if (enc4 != 64) {
+        if (enc4 !== 64) {
             output = output + String.fromCharCode(chr3);
         }
         
@@ -119,7 +128,7 @@ String.prototype.base64Decode = function() {
 
     return output;
 
-}
+};
     
 String.prototype.utf8Encode = function () {
     var string = this.replace(/\r\n/g,"\n");
@@ -142,13 +151,14 @@ String.prototype.utf8Encode = function () {
         }
     }
     return utftext;
-}
+};
 
 String.prototype.utf8Decode = function () {
     var utftext = this;
     var string = "";
     var i = 0;
-    var c = c1 = c2 = 0;
+    var c2 = 0, c1 = c2, c = c1, c3;
+    
 
     while ( i < utftext.length ) {
 
@@ -173,7 +183,7 @@ String.prototype.utf8Decode = function () {
     }
 
     return string;
-}
+};
 
 
 var UtilityClass = Class.extend({
@@ -194,7 +204,7 @@ var UtilityClass = Class.extend({
                 isSupported = typeof element[eventName] === 'function';
                 
                 // If property was created, "remove it" (by setting value to `undefined`)
-                if(!typeof element[eventName] === undefined) {
+                if(typeof element[eventName] !== undefined) {
                     element[eventName] = undefined;
                 }
                 element.removeAttribute(eventName);
@@ -206,27 +216,30 @@ var UtilityClass = Class.extend({
     },
 
     disableSelection: function(target){
-        if (typeof target.onselectstart!="undefined") //IE route
+        if (typeof target.onselectstart!=="undefined") { //IE route
             target.onselectstart=function(){
-                return false
-            }
-        else if (typeof target.style.MozUserSelect!="undefined") //Firefox route
-            target.style.MozUserSelect="none"
-        else //All other route (ie: Opera)
+                return false;
+            };
+        }
+        else if (typeof target.style.MozUserSelect!=="undefined"){ //Firefox route
+            target.style.MozUserSelect="none";
+        }
+        else { //All other route (ie: Opera)
             target.onmousedown=function(){
-                return false
-            }
+                return false;
+            };
+        }
     },
 
     set: function() {
         var a = arguments;
         var l = a.length;
         var i = 0;
-        if(l == 0) {
+        if(l === 0) {
             throw new Error('Empty isSet.');
         }
-        while(i != l) {
-            if(typeof(a[i]) == 'undefined' || a[i] === null) {
+        while(i !== l) {
+            if(typeof(a[i]) === 'undefined' || a[i] === null) {
                 return false;
             }
             else {
@@ -238,16 +251,15 @@ var UtilityClass = Class.extend({
 
     empty: function(mixedVariable) {
         var key;
-        if(mixedVariable === ""
-            || mixedVariable === 0
-            || mixedVariable === "0"
-            || mixedVariable === null
-            || mixedVariable === false
-            || mixedVariable === undefined
-            ) {
+        if(mixedVariable === "" 
+            || mixedVariable == 0 
+            || mixedVariable === "0" 
+            || mixedVariable === null 
+            || mixedVariable === false 
+            || mixedVariable === undefined ) {
             return true;
         }
-        if(typeof mixedVariable == 'object') {
+        if(typeof mixedVariable === 'object') {
             for(key in mixedVariable) {
                 if(typeof mixedVariable[key] !== 'function') {
                     return false;
@@ -259,8 +271,9 @@ var UtilityClass = Class.extend({
     },
 
     getExtraWidth: function(element) {
-        var element = $(element);
         var totalWidth = 0;
+        element = $(element);
+        
         totalWidth += parseInt(element.css("padding-left"), 10) + parseInt(element.css("padding-right"), 10); //Total Padding Width
         totalWidth += parseInt(element.css("margin-left"), 10) + parseInt(element.css("margin-right"), 10); //Total Margin Width
         totalWidth += parseInt(element.css("borderLeftWidth"), 10) + parseInt(element.css("borderRightWidth"), 10); //Total Border Width
