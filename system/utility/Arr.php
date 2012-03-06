@@ -138,12 +138,15 @@ class Arr {
     }
 
     static function isAssociative($array) {
-        $keys = array_keys($array);
-        foreach($keys as $key) {
-            if(!is_int($key)) {
-                return true;
+        if (is_array($array)) {
+            $keys = array_keys($array);
+            foreach ($keys as $key) {
+                if (!is_int($key)) {
+                    return true;
+                }
             }
         }
+        
         return false;
     }
 

@@ -3,7 +3,7 @@
  * form is initialized on top of the existing HTML and handles validation, tool tip management, dependencies, instances, triggers, pages, and form submission.
  *
  * @author Kirk Ouimet <kirk@kirkouimet.com>
- * @author Seth Jensen <seth@sethjdesign.com>
+ * @author Zander Seth Jensen <zander@sethzjensen.com>
  * @version .5
  */
 Form = Class.extend({
