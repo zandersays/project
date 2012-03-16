@@ -1,0 +1,121 @@
+/* Form */
+.form { }
+.form .formTitle { }
+.form .formDescription { }
+.form .formIFrame { border: none; display: none; width: 600px; height: 200px; clear: both; border: 1px solid #CCC; }
+.form .formAfterControl {  }
+
+/* Alerts and Modal */
+.form .formAlertWrapper { position: fixed; top: 0; left: 0; z-index: 3; text-align: center; width: 100%; margin: 0 0 0 0; }
+.form .formAlertWrapper .error { background-color: red; }
+.form .formAlertWrapper .update { background-color: blue; }
+.form .formAlert { max-width: 100px; margin: 0 auto; padding: .25em 1em .5em 1em; text-align: center; font-weight: bold; background: #333; color:#FFF; font-size: .8em; }
+.form .formModalTransparency { position: absolute; z-index: 99999; width: 100%; height: 100%; left: 0; top: 0; filter: alpha(opacity: 50); -moz-opacity: .5; -khtml-opacity: .5; opacity: .5; background-color: #CCCCCC;}
+.form .formModalWrapper { position: absolute; z-index: 1000000; width: 100%; height: 100%; left: 0; top: 0; }
+.form .formModalWrapper .formModal { border: 1px solid red; background: #F2F2F2; overflow: auto; min-width: 300px; max-width: 500px; margin: 0 auto; font-size: .8em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -moz-box-shadow: 2px 12px 30px #333; }
+.form .formModalWrapper .formModal .formModalHeader { background: #AA231D; color: #FFF; font-size: 1.4em; padding: .1em .25em; }
+.form .formModalWrapper.formModalNotice .formModal { border: 1px solid #257AF8; background: #F2F2F2; overflow: auto; min-width: 300px; max-width: 500px; margin: 0 auto; font-size: .8em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -moz-box-shadow: 2px 12px 30px #333; }
+.form .formModalWrapper.formModalNotice .formModal .formModalHeader { background: #257AF8; color: #FFF; font-size: 1.4em; padding: .1em .25em; }
+.form .formModalWrapper .formModal { border: 1px solid red; background: #F2F2F2; overflow: auto; min-width: 300px; max-width: 500px; margin: 0 auto; font-size: .8em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -moz-box-shadow: 2px 12px 30px #333; }
+.form .formModalWrapper .formModal .formModalContent { padding: .5em; background: #FFF; }
+.form .formModalWrapper .formModal .formModalFooter { border-top: 1px solid #CECECE; text-align: right; }
+.form .formModalWrapper .formModal .formModalFooter button { margin: .5em; font-size: 1em; background: #FFFFFF url(../project/images/forms/button-background.png) repeat-x scroll left center; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; padding: .35em .45em; cursor: pointer; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+
+/* Page Navigator */
+.form .formPageNavigator { overflow: auto; }
+
+.form .formPageNavigatorTop { }
+.form .formPageNavigator ul { margin: 0; }
+.form .formPageNavigator li { margin: 0; list-style: none; }
+.form .formPageNavigator .formPageNavigatorHide  { display: none; }
+.form .formPageNavigatorTop { border-top: 1px dotted #CCC; border-bottom: 1px dotted #CCC; padding: .55em .5em .5em 0; margin-bottom: .5em; }
+.form .formPageNavigatorTop .formPageNavigatorLink { float: left; margin: 0 .5em 0 0; text-align: center; color: #000; cursor: pointer; padding: 0 .75em .1em 0; }
+.form .formPageNavigatorTop .formPageNavigatorLink .formNavigatorLinkPrefix { width: 34px; height: 29px; padding: 1px 0 0 0; text-align: center; display: inline-block; }
+.form .formPageNavigatorTop .formPageNavigatorLinkUnlocked .formNavigatorLinkPrefix { background: url(../project/images/forms/page-navigator-unlocked.png) .3em 50% no-repeat; color: #666; }
+.form .formPageNavigatorTop .formPageNavigatorLinkLocked .formNavigatorLinkPrefix { background: url(../project/images/forms/page-navigator-locked.png) .3em 50% no-repeat; color: #666; }
+.form .formPageNavigatorTop .formPageNavigatorLinkDependencyLocked .formNavigatorLinkPrefix { background: url(../project/images/forms/page-navigator-dependency-locked.png) .3em 50% no-repeat; color: #666; }
+.form .formPageNavigatorTop .formPageNavigatorLinkWarning .formNavigatorLinkPrefix { background: url(../project/images/forms/page-navigator-warning.png) .3em 50% no-repeat; }
+.form .formPageNavigatorTop .formPageNavigatorLinkActive .formNavigatorLinkPrefix { background: url(../project/images/forms/page-navigator-active.png) .3em 50% no-repeat; color: #000; font-weight: bold; }
+
+.form .formPageNavigatorRight { position: absolute; top: 0; right: 0; }
+.form .formPageNavigatorRight .formPageNavigatorLink { border: 1px solid #CCC; margin: 0 0 .25em 0; -webkit-border-radius: 5px; -moz-border-radius: 5px; }
+.form .formPageNavigatorRight .formPageNavigatorLinkUnlocked { padding: .25em .75em .25em 1.9em; background: url(../project/images/icons/dot-check-green.png) .3em 50% no-repeat; cursor: pointer; color: #2C8AEF; }
+.form .formPageNavigatorRight .formPageNavigatorLinkDisabled { padding: .25em .75em .25em .55em; color: #999; cursor: default; }
+.form .formPageNavigatorRight .formPageNavigatorLinkWarning { padding: .25em .75em .25em 1.9em; background: url(../project/images/icons/exclamation-dot-red.png) .3em 50% no-repeat; cursor: pointer; color: #2C8AEF; }
+.form .formPageNavigatorRight .formPageNavigator li.formPageNavigatorLinkActive { background-color: #DFEFFF; border: 1px solid #C2D7EF; }
+
+.form .formProgress {}
+.form .formProgressBar { background: #2C8AEF; border: 1px solid #006BDF; -moz-border-radius: 5px; width: 0; }
+.form .formProgressBar p { text-align: center; color: #FFF; line-height: 2em; margin: 0; }
+
+/* Control */
+.form .formControl { width: 100%; box-sizing: border-box; clear: both; margin: .75em 0 0 0; padding: 0; list-style: none; overflow: visible; height: 36px; }
+.form .formControl li { float: left; margin: 0 1em 0 0; position: relative; width: 50%; box-sizing: border-box; padding: 0 8px; }
+.form .formControl li:only-child { width: 100%}
+.form .formControl li button { font-size: 1em; margin: 0 0 1em 0; background: #FFFFFF url(../project/images/forms/button-background.png) repeat-x scroll left center; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; padding: .65em .75em; cursor: pointer; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -moz-border-radius: 5px; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -webkit-border-radius: 5px; }
+.form .formControl li button:hover { border-color: #2C8AEF; }
+.form .formControl li button:active { border-color: #7FBCFF; }
+.form .formControl .formFailureNotice { background: url(../project/images/icons/exclamation-dot-red.png) no-repeat .5em 50%; padding: .25em .75em .25em 2em; background-color: #FFDFE0; border: 1px solid #EFC2C4; -moz-border-radius: 5px; -webkit-border-radius: 5px;  }
+.form .formControl .processingLi { background: url(../project/images/animations/loading-circle-bars-grey.gif); width: 16px; height: 16px; margin-top: .75em; }
+
+/* Pages */
+.form .formWrapperContainer { overflow: auto; }
+.form .formPageWrapper { overflow: hidden; clear: both; }
+.form .formPageScroller { }
+.form .formPage { float: left; width: 100%; box-sizing: border-box; }
+.form .formPage .formPageTitle { }
+.form .formPage .formPageDescription { }
+.form .formPageInactive { visibility: hidden; }
+.form .formPageSuccess {}
+.form .formPageFailure {}
+.form .formFailure { background: url(../project/images/icons/exclamation-dot-red.png) no-repeat .5em 50%; padding: .25em .75em .25em 2em; background-color: #FFDFE0; border: 1px solid #EFC2C4; -moz-border-radius: 5px; -webkit-border-radius: 5px;  }
+
+/* Sections */
+.form .formSection { clear: both; overflow: auto; }
+.form .formSection .formSectionTitle { }
+.form .formSection .formSectionDescription { }
+.form .formSectionDependencyDisabled { background: url(../project/images/icons/lock-form.png) no-repeat top right #f1f1f1; color: #CCC; border: 1px solid #f1f1f1; }
+.form .formSectionDependencyDisabled:hover { background-color: #f1f1f1; border: 1px solid #CCC; }
+
+/* Instances */
+.form .formComponentAddInstanceButton { display: block; margin: 0 0 .75em .65em; background: url(../project/images/icons/plus-dot-green.png) no-repeat .25em 50% #EEEEEE; font-size: .8em; clear: both; border: 1px solid #AAA; padding: .25em .25em .25em 1.5em; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-padding-end: .4em; -webkit-padding-after: .35em; -webkit-padding-before: .35em; -webkit-padding-start: 1.75em; }
+.form .formComponentRemoveInstanceButton { display: inline; margin: 0 0 0 .5em; background: url(../project/images/icons/x-octagon-red.png) no-repeat .25em 50% #EEEEEE; font-size: .8em; clear: both; border: 1px solid #AAA; padding: .25em .25em .25em 1.5em; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px;  -webkit-padding-end: .4em; -webkit-padding-after: .35em; -webkit-padding-before: .35em; -webkit-padding-start: 1.75em; }
+.form .formSectionAddInstanceButton { display: block; margin: 0 0 .75em .65em; background: url(../project/images/icons/plus-dot-green.png) no-repeat .25em 50% #EEEEEE; font-size: .8em; clear: both; border: 1px solid #AAA; padding: .25em .25em .25em 1.5em; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-padding-end: .4em; -webkit-padding-after: .35em; -webkit-padding-before: .35em; -webkit-padding-start: 1.75em; }
+.form .formSectionRemoveInstanceButton { display: block; margin: 0 0 .75em .65em; background: url(../project/images/icons/x-octagon-red.png) no-repeat .25em 50% #EEEEEE; font-size: .8em; clear: both; border: 1px solid #AAA; padding: .25em .25em .25em 1.5em; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-padding-end: .4em; -webkit-padding-after: .35em; -webkit-padding-before: .35em; -webkit-padding-start: 1.75em; }
+
+/* Tips */
+.form .formTip { position: absolute; top: 0; left: 0; display: none; z-index: 3; max-width: 300px; _width: 300px; }
+.form .formTip .tipArrow { position: relative; display: block; margin: 8px 0 0 1px; width: 12px; height: 16px; background: url(../project/images/forms/tip-arrow-left.png) no-repeat; }
+.form .formTip .tipContent { position: relative; top: -22px; left: 13px; background: #333333; zoom: 1; color: #FFF; z-index: 3; padding: .75em 1em .75em .95em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -moz-box-shadow: 2px 2px 8px #444; -webkit-box-shadow: 2px 2px 8px #444; }
+.form .formTip .tipContent p { color: #FFF; margin: 0; font-size: .8em; }
+.form table .formTip .tipContent p { font-size: 1em; }
+.form table .formTip .tipContent ul { font-size: 1em; }
+.form .formTip .tipContent ul { margin: 0; }
+.form .formTip .tipContent .tipErrorUl { color: #FF8F8F; }
+.form .formTip .tipContent .tipErrorUl li { list-style-type: disc; margin-left: 1.25em; font-weight: bold; }
+.form .formTipBlurred { z-index: 2 !important; }
+.form .formTipBlurred .tipArrow { background: url(../project/images/forms/tip-arrow-left-blurred.png) no-repeat; }
+.form .formTipBlurred .tipContent { background-color: #555; -moz-box-shadow: 2px 2px 8px #555; -webkit-box-shadow: 2px 2px 8px #555; }
+.form .formComponentMultipleChoiceTipIcon  { display: inline-block; width: 16px; height: 20px; background: url(../project/images/icons/question-mark-circle-blue.png) no-repeat 0 3px; }
+.form .formComponentMultipleChoiceTip .tipArrow { margin-top: 3px !important; }
+.form .formComponentMultipleChoiceTip .tipContent { top: -23px !important; }
+
+/* Components */
+.form .formComponent { padding: .25em .8em .5em .5em; height: inherit; overflow: hidden; margin-bottom: 3px; border: 1px solid transparent; float: left; clear: both; width: 100%; -moz-border-radius: 5px; -webkit-border-radius: 5px; box-sizing: border-box; }
+.form .formComponent select { font-family: Arial; font-size: .8em; background: #EEEEEE; border: 1px solid #AAA; }
+.form .formComponent textarea { font-family: Arial; font-size: .8em; padding: 3px .35em; background: url('../project/images/forms/input-background.gif') repeat-x 0 1px scroll #EEEEEE; border: 1px solid #AAA; resize:none;}
+.form .formComponent .defaultValue { color: #666666; }
+.form .formComponent .formComponentDescription { clear: both; margin: .5em 0 0 0; }
+.form .formComponentHighlight { background-color: #DFEFFF; border: 1px solid #C2D7EF; }
+.form .formComponentServerSideCheck { background-color: #FFFCDF; border: 1px solid #EFEBC2; }
+.form .formComponentValidationFailed { background-color: #FFDFE0; border: 1px solid #EFC2C4; }
+.form .formComponentValidationPassed { }
+.form .formComponentDependencyDisabled { background: url(../project/images/icons/lock.png) no-repeat top right #f1f1f1; color: #CCC; }
+.form .formComponentDependencyDisabled.formComponentHighlight { background-color: #f1f1f1; border: 1px solid #CCC; }
+
+/* Labels and Sublabels */
+.form .formComponent .formComponentLabel { display: block; font-size: .8em; font-weight: bold; }
+.form .formComponent .formComponentLabelRequiredStar { color: #F00; }
+.form .formComponentValidationFailed .formComponentLabel, .form .formComponentValidationFailed .formComponentLikertStatementLabel { background: url(../project/images/icons/exclamation-dot-red.png) no-repeat left; padding-left: 18px; }
+
+.form .formComponent .formComponentSubLabel p { margin: 0; padding: 0; font-size: .7em; }

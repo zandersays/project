@@ -99,6 +99,7 @@ class Project {
 
             // Utility
             'Arr' => Project::getProjectPath().'system/utility/Arr.php',
+            'Browser' => Project::getProjectPath().'system/utility/Browser.php',
             'Dir' => Project::getProjectPath().'system/utility/Dir.php',
             'File' => Project::getProjectPath().'system/utility/File.php',
             'Image' => Project::getProjectPath().'system/utility/Image.php',

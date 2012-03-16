@@ -164,15 +164,15 @@ FormComponentSingleLineText = FormComponent.extend({
             'maxMoneyValue': function(options) {
                 var amount = options.maxMoneyValue;
                 var errorMessageArray = ['Must be numeric with a maximum value of ' + amount + '.'];
-                var userInput = options.value.replace(/\$|\,/g , '')
-                var maxValue = options.maxMoneyValue.replace(/\$|\,/g , '')
+                var userInput = options.value.replace(/\$|\,/g , '');
+                var maxValue = options.maxMoneyValue.replace(/\$|\,/g , '');
                 return (parseInt(userInput, 10) <= parseInt(maxValue, 10)) ? 'success' : errorMessageArray;
             },
             'minMoneyValue': function(options) {
                 var amount = options.minMoneyValue;
                 var errorMessageArray = ['Must be numeric with a minimum value of ' + amount + '.'];
-                var userInput = options.value.replace(/\$|\,/g , '')
-                var minValue = options.minMoneyValue.replace(/\$|\,/g , '')
+                var userInput = options.value.replace(/\$|\,/g , '');
+                var minValue = options.minMoneyValue.replace(/\$|\,/g , '');
                 return (parseInt(userInput, 10) >= parseInt(minValue, 10)) ? 'success' : errorMessageArray;
             },
             'minLength' : function(options) {
@@ -226,7 +226,7 @@ FormComponentSingleLineText = FormComponent.extend({
             },
             'serverSide': function(options) {
                 if(options.value == '') {
-                    return 'success'
+                    return 'success';
                 }
 
                 // options: value, url, data
@@ -283,7 +283,7 @@ FormComponentSingleLineText = FormComponent.extend({
             },
             'url': function(options) {
                 var errorMessageArray = ['Must be a valid Internet address.'];
-                return options.value == '' || options.value.match(/^((ht|f)tp(s)?:\/\/|www\.)?([\-A-Z0-9.]+)(\.[a-zA-Z]{2,4})(\/[\-A-Z0-9+&@#\/%=~_|!:,.;]*)?(\?[\-A-Z0-9+&@#\/%=~_|!:,.;]*)?$/i)  ? 'success' : errorMessageArray;
+                return options.value == '' || $.trim(options.value).match(/^((ht|f)tp(s)?:\/\/|www\.)?([\-A-Z0-9.]+)(\.[a-zA-Z]{2,4})(\/[\-A-Z0-9+&@#\/%=~_|!:,.;]*)?(\?[\-A-Z0-9+&@#\/%=~_|!:,.;]*)?$/i)  ? 'success' : errorMessageArray;
             },
             'username': function(options) {
                 var errorMessageArray = ['Must use 4 to 32 characters and start with a letter.'];
@@ -293,7 +293,7 @@ FormComponentSingleLineText = FormComponent.extend({
                 var errorMessageArray = ['Must be a valid United States zip code.'];
                 return options.value == '' || options.value.match(/^[0-9]{5}(?:-[0-9]{4})?$/)  ? 'success' : errorMessageArray;
             }
-        }
+        };
     },
 
     addMask: function(){

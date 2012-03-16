@@ -12,24 +12,24 @@ FormComponentAddress = FormComponent.extend({
             //Name Validations
             'required': function(options) {
                 var errorMessageArray = [];
-                if(options.value.addressLine1 == '') {
+                if(options.value.addressLine1 === '') {
                     errorMessageArray.push(['Street Address is required.']);
                 }
-                if(options.value.city == '') {
+                if(options.value.city === '') {
                     errorMessageArray.push(['City is required.']);
                 }
-                if(options.value.state == '') {
+                if(options.value.state === '') {
                     errorMessageArray.push(['State is required.']);
                 }
-                if(options.value.zip == '') {
+                if(options.value.zip === '') {
                     errorMessageArray.push(['Zip is required.']);
                 }
-                if(options.value.country == '') {
+                if(options.value.country === '') {
                     errorMessageArray.push(['Country is required.']);
                 }
                 return errorMessageArray.length < 1 ? 'success' : errorMessageArray;
             }
-        }
+        };
         
         this.changed = false;
     },
@@ -42,22 +42,22 @@ FormComponentAddress = FormComponent.extend({
                 city:'',
                 state:'',
                 zip:''
-            }
+            };
         }
         if(this.options.emptyValue){
-            if(data.addressLine1 != this.options.emptyValue.addressLine1){
+            if(data.addressLine1 !== this.options.emptyValue.addressLine1){
                 self.component.find(':input[id*=addressLine1]').removeClass('defaultValue').val(data.addressLine1).blur();
             }
-            if(data.addressLine2 != this.options.emptyValue.addressLine2){
+            if(data.addressLine2 !== this.options.emptyValue.addressLine2){
                 self.component.find(':input[id*=addressLine2]').removeClass('defaultValue').val(data.addressLine2).blur();
             }
-            if(data.city != this.options.emptyValue.city){
+            if(data.city !== this.options.emptyValue.city){
                 self.component.find(':input[id*=city]').removeClass('defaultValue').val(data.city).blur();
             }
-            if(data.state != this.options.emptyValue.state || this.options.emptyValue.state == undefined){
+            if(data.state !== this.options.emptyValue.state || this.options.emptyValue.state === undefined){
                 self.component.find(':input[id*=state]').removeClass('defaultValue').val(data.state).blur();
             }
-            if(data.zip != this.options.emptyValue.zip){
+            if(data.zip !== this.options.emptyValue.zip){
                 self.component.find(':input[id*=zip]').removeClass('defaultValue').val(data.zip).blur();
             }
         }
@@ -101,19 +101,19 @@ FormComponentAddress = FormComponent.extend({
             address[$(input).attr('id').replace(self.id+'-', '')] = $(input).val();
         });
         if(this.options.emptyValue){
-            if(address.addressLine1 == this.options.emptyValue.addressLine1){
+            if(address.addressLine1 === this.options.emptyValue.addressLine1){
                 address.addressLine1 = '';
             }
-            if(address.addressLine2 == this.options.emptyValue.addressLine2){
+            if(address.addressLine2 === this.options.emptyValue.addressLine2){
                 address.addressLine2 = '';
             }
-            if(address.city == this.options.emptyValue.city){
+            if(address.city === this.options.emptyValue.city){
                 address.city = '';
             }
-            if(address.state == this.options.emptyValue.state){
+            if(address.state === this.options.emptyValue.state){
                 address.state = '';
             }
-            if(address.zip == this.options.emptyValue.zip){
+            if(address.zip === this.options.emptyValue.zip){
                 address.zip = '';
             }
         }
@@ -138,9 +138,9 @@ FormComponentAddress = FormComponent.extend({
                 }
                 self.clearValidation();
                 $.each(self.options.validationOptions, function(validationType, validationOptions){
-                    validationOptions['value'] = self.getValue();
+                    validationOptions.value = self.getValue();
                     var validation = self.validationFunctions[validationType](validationOptions);
-                    if(validation == 'success'){
+                    if(validation === 'success'){
                         return;
                     }
                     else {
@@ -165,13 +165,13 @@ FormComponentAddress = FormComponent.extend({
             var input = self.component.find('input[id*='+key+']');
             input.addClass('defaultValue');
             input.focus(function(event){
-                if ($.trim($(event.target).val()) == value ){
+                if ($.trim($(event.target).val()) === value ){
                     $(event.target).val('');
                     $(event.target).removeClass('defaultValue');
                 }
             });
             input.blur(function(event){
-                if ($.trim($(event.target).val()) == '' ){
+                if ($.trim($(event.target).val()) === '' ){
                     $(event.target).addClass('defaultValue');
                     $(event.target).val(value);
                 }

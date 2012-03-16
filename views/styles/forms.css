@@ -83,7 +83,7 @@
 .form .formSectionRemoveInstanceButton { display: block; margin: 0 0 .75em .65em; background: url(../project/images/icons/x-octagon-red.png) no-repeat .25em 50% #EEEEEE; font-size: .8em; clear: both; border: 1px solid #AAA; padding: .25em .25em .25em 1.5em; cursor: pointer; border-radius: 5px; -moz-border-radius: 5px; -webkit-padding-end: .4em; -webkit-padding-after: .35em; -webkit-padding-before: .35em; -webkit-padding-start: 1.75em; }
 
 /* Tips */
-.form .formTip { position: absolute; top: 0; left: 0; display: none; z-index: 3; max-width: 300px; _width: 300px; }
+.form .formTip { position: absolute; top: 0; left: 0; display: none; z-index: 10003; max-width: 300px; _width: 300px; }
 .form .formTip .tipArrow { position: relative; display: block; margin: 8px 0 0 1px; width: 12px; height: 16px; background: url(../project/images/forms/tip-arrow-left.png) no-repeat; }
 .form .formTip .tipContent { position: relative; top: -22px; left: 13px; background: #333333; zoom: 1; color: #FFF; z-index: 3; padding: .75em 1em .75em .95em; -webkit-border-radius: 5px; -moz-border-radius: 5px; -moz-box-shadow: 2px 2px 8px #444; -webkit-box-shadow: 2px 2px 8px #444; }
 .form .formTip .tipContent p { color: #FFF; margin: 0; font-size: .8em; }
@@ -92,7 +92,7 @@
 .form .formTip .tipContent ul { margin: 0; }
 .form .formTip .tipContent .tipErrorUl { color: #FF8F8F; }
 .form .formTip .tipContent .tipErrorUl li { list-style-type: disc; margin-left: 1.25em; font-weight: bold; }
-.form .formTipBlurred { z-index: 2 !important; }
+.form .formTipBlurred { z-index: 10002 !important; }
 .form .formTipBlurred .tipArrow { background: url(../project/images/forms/tip-arrow-left-blurred.png) no-repeat; }
 .form .formTipBlurred .tipContent { background-color: #555; -moz-box-shadow: 2px 2px 8px #555; -webkit-box-shadow: 2px 2px 8px #555; }
 .form .formComponentMultipleChoiceTipIcon  { display: inline-block; width: 16px; height: 20px; background: url(../project/images/icons/question-mark-circle-blue.png) no-repeat 0 3px; }
@@ -186,13 +186,13 @@
 
 /* Component Type - File */
 .form .formComponentFile { /*position: relative;*/ }
-.form .formComponentFile .pseudoFile { z-index: 1; position: absolute; }
+.form .formComponentFile .pseudoFile { z-index: 1; position: absolute; filter: alpha(opacity: 0); }
 .form .formComponentFile .pseudoFile input { border: 1px solid #AAA !important; color: #000 !important; float: left; display: block;  }
 .form .formComponentFile .pseudoFile input:disabled { border: 1px solid #AAA !important; color: #000 !important; }
 .form .formComponentFile .pseudoFile button:disabled { color: #000; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; }
 .form .formComponentFile .pseudoFile button { float: left; display: block; font-size: .8em; margin: 0 0 0 .25em; background: #FFFFFF url(../project/images/forms/button-background.png) repeat-x scroll left center; border: 1px solid; border-color: #DEDEDE #BBBBBB #BFBFBF #DEDEDE; padding: .25em .5em .225em .5em; cursor: pointer; -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -moz-border-radius: 5px; -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); -webkit-border-radius: 5px; }
 .form .formComponentFile .pseudoFile .pseudoFileAjaxStatus { display: none; height: 32px; width: 32px; float: left; display: block; margin-left: .5em; }
-.form .formComponentFile .file.hidden { z-index: 2; text-align: right; position: relative;  font-size: 1.1em; filter: alpha(opacity: 0); -moz-opacity: 0; -khtml-opacity: 0; opacity: 0; }
+.form .formComponentFile .file.hidden { z-index: 2; text-align: right; position: relative;  font-size: 1.1em; -moz-opacity: 0; -khtml-opacity: 0; opacity: 0; }
 
 /* Component Type - Name */
 .form .formComponentName input:focus {  border: 1px solid #888; }

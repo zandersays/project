@@ -1,14 +1,14 @@
 var AddressHandler = Class.extend({
-    initialize: function(options) {
+    initialize: function (options) {
         // Update the options object
         this.options = $.extend(true, {
-            'autoUpdate': true, 
+            'autoUpdate': true,
             'crawlable': false,
-            'history': true, 
+            'history': true,
             'strict': true,
             'wrap': false
         }, options || {});
-        
+
         this.browser = $.browser;
         this.version = parseFloat(this.browser.version),
         this.document = window.document

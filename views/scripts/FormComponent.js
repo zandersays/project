@@ -4,7 +4,7 @@
  *
  */
 FormComponent = Class.extend({
-    initialize: function(parentFormSection, formComponentId, formComponentType, options) {
+    initialize: function (parentFormSection, formComponentId, formComponentType, options) {
         this.options = $.extend({
             validationOptions: [],                // 'required', 'email', etc... - An array of validation keys used by this.validate() and formValidator
             showErrorTipOnce: false,
@@ -22,43 +22,43 @@ FormComponent = Class.extend({
         // Class variables
         this.parentFormSection = parentFormSection;
         this.id = formComponentId;
-        this.component = $('#'+formComponentId+'-wrapper');
+        this.component = $('#' + formComponentId + '-wrapper');
         this.formData = null;                       // Will be an object is there is just one instance, will be an array if there is more than one instance
         this.type = formComponentType;                       // 'SingleLineText', 'TextArea', etc... - The component formComponentType
         this.errorMessageArray = [];            // Used to store error messages displayed in tips or appended to the description
         this.tip = null;
-        this.tipDiv = this.component.find('#'+this.id+'-tip');
+        this.tipDiv = this.component.find('#' + this.id + '-tip');
         this.tipTarget = null;                  // The ID of the element where the tip will be targeted
         this.validationPassed = true;
         this.disabledByDependency = false;
         this.isRequired = false;
         this.requiredCompleted = false;
         this.validationFunctions = {
-            'required': function(options) {
+            'required': function (options) {
                 var errorMessageArray = ['Required.'];
                 return options.value != '' ? 'success' : errorMessageArray;
             }
-        }
+        };
 
-        if(this.options.isInstance){
+        if (this.options.isInstance) {
             this.instanceArray = null;
             this.clone = null; // Clone of the original HTML, only initiates if instances are turned on
-        }
-        else { // do parentInstance functions
-            if(this.options.instanceOptions != null){
+        } else { // do parentInstance functions
+            if (this.options.instanceOptions !== null) {
                 this.clone = this.component.clone();
                 this.iterations = 1;
-            }
-            else {
+            } else {
                 this.clone = null;
             }
             this.instanceArray = [this];
             this.createInstanceButton();
         }
-        if(this.options.instanceOptions && this.options.instanceOptions.callback) {
+        if (this.options.instanceOptions && this.options.instanceOptions.callback) {
             var instanceCallBackFunction = $.trim(this.options.instanceOptions.callback);
-                                                            //type is add or remove 
-            this.options.instanceOptions.callback = function(type) {return eval(instanceCallBackFunction);};
+            //type is add or remove 
+            this.options.instanceOptions.callback = function (type) {
+                return eval(instanceCallBackFunction);
+            };
         }
 
         // Initialize the implemented component
@@ -71,7 +71,7 @@ FormComponent = Class.extend({
         this.catchComponentChangedEventListener();
 
         // Add a tip if there is content to add
-        if($.trim(this.tipDiv.html()) !== '') {
+        if ($.trim(this.tipDiv.html()) !== '') {
             this.addTip();
         }
 
@@ -83,27 +83,27 @@ FormComponent = Class.extend({
         var self = this;
 
         // Focus
-        this.component.find(':input:not(button):not(hidden)').each(function(key, input) {
-            $(input).bind('focus', function() {
+        this.component.find(':input:not(button):not(hidden)').each(function (key, input) {
+            $(input).bind('focus', function () {
                 self.highlight();
-            } );
-            $(input).bind('blur', function(event) {
+            });
+            $(input).bind('blur', function (event) {
                 self.removeHighlight();
 
                 // Handle multifield highlight and validation
-                if((self.type == 'FormComponentName' || self.type == 'FormComponentAddress' || self.type == 'FormComponentCreditCard') && self.changed === true){
+                if ((self.type === 'FormComponentName' || self.type === 'FormComponentAddress' || self.type === 'FormComponentCreditCard') && self.changed === true) {
                     self.validate();
                 }
             });
         });
 
         // Multiple choice
-        if(this.component.find('input:checkbox, input:radio').length > 0) {
-            this.component.mouseenter(function(event) {
+        if (this.component.find('input:checkbox, input:radio').length > 0) {
+            this.component.mouseenter(function (event) {
                 self.highlight();
 
             });
-            this.component.mouseleave(function(event) {
+            this.component.mouseleave(function (event) {
                 self.removeHighlight();
             });
         }
@@ -116,24 +116,26 @@ FormComponent = Class.extend({
         self = this;
         $.each(this.options.validationOptions, function(validationFunction, validationOptions) {
             // Check to see if this component is required, take not of it in the options - used to track which components are required for progress bar
-            if(validationOptions == 'required'){
+            if (validationOptions === 'required'){
                 self.isRequired = true;
             }
 
             // Check to see if the name of the function is actually an array index
-            if(validationFunction >= 0) {
+            if (validationFunction >= 0) {
                 // The function is not an index, it becomes the name of the option with the value of an empty object
-                reformedValidations[validationOptions] = {'component': self.component};
-            }
-            // If the validationOptions is a string
-            else if(typeof(validationOptions) != 'object') {
-                reformedValidations[validationFunction] = {'component': self.component};
+                reformedValidations[validationOptions] = {
+                    'component': self.component
+                    };
+            } else if (typeof (validationOptions) !== 'object') {
+                // If the validationOptions is a string
+                reformedValidations[validationFunction] = {
+                    'component': self.component
+                    };
                 reformedValidations[validationFunction][validationFunction] = validationOptions;
-            }
-            // If validationOptions is an object
-            else if(typeof(validationOptions) == 'object') {
-                if(validationOptions[0] != undefined){
-                    reformedValidations[validationFunction] = {}
+            } else if (typeof (validationOptions) === 'object') { 
+                // If validationOptions is an object
+                if (validationOptions[0] !== undefined) {
+                    reformedValidations[validationFunction] = {};
                     reformedValidations[validationFunction][validationFunction] = validationOptions;
                 } else {
                     reformedValidations[validationFunction] = validationOptions;
@@ -146,105 +148,112 @@ FormComponent = Class.extend({
     },
 
 
-    defineComponentChangedEventListener: function() {
+    defineComponentChangedEventListener: function () {
         var self = this;
 
         // Handle IE events
-        this.component.find('input:checkbox, input:radio').each(function(key, input) {
-            $(input).bind('click', function(event) {
+        this.component.find('input:checkbox, input:radio').each(function (key, input) {
+            $(input).bind('click', function (event) {
                 $(this).trigger('formComponent:changed', self);
+                if($.browser.msie && parseFloat($.browser.version) < 9.0 ){
+                    console.log($(this).parent().find('label'));
+                    $(this).parent().find('label').toggleClass('checked');
+                }
             });
+            //console.log($.browser.msie && parseFloat($.browser.version) < 9.0);
+            //if($.browser.msie && parseFloat($.browser.version) < 9.0 ){
+                // TODO: does this work? does it have the desired effect or have any side effects?
+                /*$(input).parent().find('label').bind('click', function (event) {
+                    $(input).trigger('click');
+                });*/
+            //}
         });
 
         this.component.find(':input:not(button, :checkbox, :radio)').each(function(key, input) {
-            $(input).bind('change', function(event) {
+            $(input).bind('change', function (event) {
                 $(this).trigger('formComponent:changed', self);
             });
         });
     },
 
-    catchComponentChangedEventListener: function() {
+    catchComponentChangedEventListener: function () {
         var self = this;
-        this.component.bind('formComponent:changed', function(event) {
+        this.component.bind('formComponent:changed', function (event) {
             // Run a trigger on change if there is one
-            if(self.options.triggerFunction !== null) {
+            if (self.options.triggerFunction !== null) {
                 eval(self.options.triggerFunction);
             }
             // Prevent validation from occuring with components with more than one input
-            if(self.type == 'FormComponentName' || self.type == 'FormComponentAddress' || self.type == 'FormComponentLikert' || self.type == 'FormComponentCreditCard'){
+            if (self.type === 'FormComponentName' || self.type === 'FormComponentAddress' || self.type === 'FormComponentLikert' || self.type === 'FormComponentCreditCard'){
                 self.changed = true;
             }
             // Validate the component on change if client side validation is enabled
-            if(self.parentFormSection.parentFormPage.form.options.clientSideValidation) {
+            if (self.parentFormSection.parentFormPage.form.options.clientSideValidation) {
                 self.validate();
             }
         });
     },
 
-    highlight: function() {
+    highlight: function () {
         // Add the highlight class and trigger the highlight
         this.component.addClass('formComponentHighlight').trigger('formComponent:highlighted', this.component);
         this.component.trigger('formComponent:showTip', this.component);
     },
 
-    removeHighlight: function() {
+    removeHighlight: function () {
         var self = this;
         this.component.removeClass('formComponentHighlight').trigger('formComponent:highlightRemoved', this.component);
 
         // Wait just a microsecond to see if you are still on the same component
-        setTimeout(function() {
-            if(!self.component.hasClass('formComponentHighlight')){
+        setTimeout(function () {
+            if (!self.component.hasClass('formComponentHighlight')) {
                 self.component.trigger('formComponent:hideTip', self.component);
             }
         }, 1);
     },
 
-    getData: function() {
+    getData: function () {
         var self = this;
 
         // Handle disabled component
-        if(this.disabledByDependency || this.parentFormSection.disabledByDependency) {
+        if (this.disabledByDependency || this.parentFormSection.disabledByDependency) {
             this.formData = null;
-        }
-        else {
-            if(this.instanceArray.length > 1) {
+        } else {
+            if (this.instanceArray.length > 1) {
                 this.formData = [];
                 $.each(this.instanceArray, function(index, component) {
                     var componentValue = component.getValue();
-                        self.formData.push(componentValue);
+                    self.formData.push(componentValue);
                 });
-            }
-            else {
+            } else {
                 this.formData = this.getValue();
             }
         }
         return this.formData;
     },
 
-    setData: function(data) {
+    setData: function (data) {
         var self = this;
-        if($.isArray(data)) {
+        if ($.isArray(data)) {
             $.each(data, function(index, value) {
-                if((self.type == 'FormComponentMultipleChoice' && ($.isArray(value) ||  self.multipeChoiceType == 'radio')) || self.type != 'FormComponentMultipleChoice'){
-                    if(index !== 0 && self.instanceArray[index] == undefined){
+                if ((self.type === 'FormComponentMultipleChoice' && ($.isArray(value) ||  self.multipeChoiceType === 'radio')) || self.type !== 'FormComponentMultipleChoice'){
+                    if (index !== 0 && self.instanceArray[index] === undefined) {
                         self.addInstance();
                     }
                     self.instanceArray[index].setValue(value);
-                }
-                else {
+                } else {
                     self.setValue(data);
                     return false;
                 }
             });
-        }
-        else {
+        } else {
             this.setValue(data);
         }
     },
 
     createInstanceButton: function() {
         var self =  this;
-        if(this.options.instanceOptions != null) {
+        if(this.options.instanceOptions !== null) {
             //if(this.options.instancesAllowed != 1){
             var addButton = $('<button id="'+this.id+'-addInstance" class="formComponentAddInstanceButton">'+this.options.instanceOptions.addButtonText+'</button>');
             // hide the button if there are dependencies... show it later if necessary
@@ -257,7 +266,7 @@ FormComponent = Class.extend({
             this.parentFormSection.section.find('#'+this.id+'-addInstance').bind('click', function(event){
                 event.preventDefault();
                 if(!self.disabledByDependency){
-                self.addInstance();
+                    self.addInstance();
                 }
             });
         }
@@ -271,7 +280,7 @@ FormComponent = Class.extend({
     },
 
     addInstance: function() {
-        if(this.options.componentChangedOptions != null && this.options.componentChangedOptions.instance != undefined && this.options.componentChangedOptions.instance == true){
+        if(this.options.componentChangedOptions !== null && this.options.componentChangedOptions.instance !== undefined && this.options.componentChangedOptions.instance === true){
             this.component.trigger('formComponent:changed', this);
         }
         var parent = this;
@@ -295,25 +304,25 @@ FormComponent = Class.extend({
                 event.preventDefault();
                 
                 parent.instanceArray = $.map(parent.instanceArray, function(cloneId, index){
-                   if(cloneId.component.attr('id') ==  target.parent().attr('id')){
-                       if(cloneId.tip != null){
+                    if(cloneId.component.attr('id') ===  target.parent().attr('id')){
+                        if(cloneId.tip !== null){
                             cloneId.tip.hide();
-                       }
-                       cloneId = null;
-                   }
-                   return cloneId;
+                        }
+                        cloneId = null;
+                    }
+                    return cloneId;
                 });
-                if(animationOptions.removeEffect == 'none' || animationOptions.removeDuration === 0){
+                if(animationOptions.removeEffect === 'none' || animationOptions.removeDuration === 0){
                     target.parent().remove();
                     target.remove();
                 } else {
-                    if(animationOptions.removeEffect == 'slide'){
+                    if(animationOptions.removeEffect === 'slide'){
                         target.parent().slideUp(animationOptions.removeDuration, function(){
                             target.parent().remove();
                             target.remove();
                             //parent.parentFormSection.parentFormPage.form.formPageWrapper.dequeue();
                             parent.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
-                        })
+                        });
                         
                     }else {
                         target.parent().fadeOut(animationOptions.removeDuration, function(){
@@ -332,11 +341,11 @@ FormComponent = Class.extend({
             instanceClone.hide();
             // Insert the clone right before the add button
             addButton.before(instanceClone);
-            if(animationOptions.appearEffect == 'none' || animationOptions.appearDuration === 0){
+            if(animationOptions.appearEffect === 'none' || animationOptions.appearDuration === 0){
                 
                 instanceClone.show();
             } else {
-                if(animationOptions.appearEffect == 'slide'){
+                if(animationOptions.appearEffect === 'slide'){
                     instanceClone.slideDown(animationOptions.appearDuration, function(){
                         parent.parentFormSection.parentFormPage.form.formPageWrapper.dequeue();
                         parent.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
@@ -354,12 +363,12 @@ FormComponent = Class.extend({
             var instanceObject = this.createInstanceObject(instanceClone, this.options);
             this.instanceArray.push(instanceObject);
             this.relabelInstances(this.instanceArray, animationOptions);
-            if(this.instanceArray.length == this.options.instanceOptions.max && this.options.instanceOptions.max !== 0){
-            //if(this.instanceArray.length == this.options.instancesAllowed && this.options.instancesAllowed !== 0) {
+            if(this.instanceArray.length === this.options.instanceOptions.max && this.options.instanceOptions.max !== 0){
+                //if(this.instanceArray.length == this.options.instancesAllowed && this.options.instancesAllowed !== 0) {
                 addButton.hide();
             }
 
-            if(this.options.dependencyOptions != undefined){
+            if(this.options.dependencyOptions !== undefined){
                 var objectTop = parent.parentFormSection.parentFormPage.form;
                 var dependentOnComponent = objectTop.select(this.options.dependencyOptions.dependentOn);
                 dependentOnComponent.component.find(':text, textarea').bind('keyup', function(event) {
@@ -374,8 +383,8 @@ FormComponent = Class.extend({
             if(this.options.instanceOptions.callback){
                 this.options.instanceOptions.callback('add');
             }
-            // Resize the page
-            //parent.parentFormSection.parentFormPage.scrollTo();
+        // Resize the page
+        //parent.parentFormSection.parentFormPage.scrollTo();
         }
         return this;
     },
@@ -397,6 +406,7 @@ FormComponent = Class.extend({
                 changeName(child, 'name');
             }
         });
+        
         function changeName(child, attribute){
             ending = getEnding($(child).attr(attribute)) ;
             if(ending == ''){
@@ -405,6 +415,7 @@ FormComponent = Class.extend({
                 $(child).attr(attribute, $(child).attr(attribute).replace(ending, '-instance'+self.iterations+ending));
             }
         }
+        
         function getEnding(identifier){
             var ending = '';
             if(identifier.match(/\-(div|label|tip|removeInstance)\b/)){
@@ -412,6 +423,7 @@ FormComponent = Class.extend({
             } else {
 
             }
+            
             return ending;
         }
         return component;
@@ -420,10 +432,10 @@ FormComponent = Class.extend({
     createInstanceObject:function(instanceClone, options){
         var tempOptions = $.extend(true, {}, options);
         tempOptions.isInstance = true;
-        if(this.options.componentChangedOptions != null && this.options.componentChangedOptions.children != undefined && this.options.componentChangedOptions.children == false ){
+        if(this.options.componentChangedOptions !== null && this.options.componentChangedOptions.children !== undefined && this.options.componentChangedOptions.children === false ){
             tempOptions.componentChangedOptions = null;
         }
-        var instanceObject = new window[this.type](this.parentFormSection, this.id+'-instance'+this.iterations, this.type, tempOptions);
+        var instanceObject = new window[this.type](this.parentFormSection, this.id + '-instance'+this.iterations, this.type, tempOptions);
         return instanceObject;
     },
 
@@ -435,7 +447,7 @@ FormComponent = Class.extend({
                 if(label.length > 0) {
                     var star = label.find('span.formComponentLabelRequiredStar');
                     if(star.length > 0){
-                        star.remove()
+                        star.remove();
                     }
                     if(label.html().match(/:$/)){
                         label.html(label.html().replace(/(\([0-9]+\))?:/, ' ('+count+'):'));
@@ -451,7 +463,7 @@ FormComponent = Class.extend({
                     label = instance.component.find('label');
                     var star = label.find('span.formComponentLabelRequiredStar');
                     if(star.length > 0){
-                        star.remove()
+                        star.remove();
                     }
                     if (label.text().match(/(\([0-9]+\))$/)){
                         label.text(label.text().replace(/(\([0-9]+\))$/, '('+count+')'));
@@ -482,7 +494,7 @@ FormComponent = Class.extend({
                 showEffect: self.options.tipShowEffect,
                 hideEffect: 'none',
                 onBeforeShow: function(){
-                    if(self.tipDiv.find('.tipContent').text() == ''){
+                    if(self.tipDiv.find('.tipContent').text() === ''){
                         return false;
                     }
                 },
@@ -491,7 +503,9 @@ FormComponent = Class.extend({
                     var height = $(window).height();
                     var offset = this.getTooltip().offset().top + this.getTooltip().outerHeight() + 12;
                     if($(window).scrollTop() + height < offset) {
-                        $.scrollTo(offset - height + 'px', 250, {axis:'y'});
+                        $.scrollTo(offset - height + 'px', 250, {
+                            axis:'y'
+                        });
                     }
                 }
             });
@@ -505,7 +519,7 @@ FormComponent = Class.extend({
         // Show a tip
         this.component.bind('formComponent:showTip', function(event) {
             // Make sure the tip exists and display the tip if it is not empty
-            if(self.tip && typeof(self.tip) == 'object' && $.trim(self.tipDiv.html()) !== '') {
+            if(self.tip && typeof(self.tip) === 'object' && $.trim(self.tipDiv.html()) !== '') {
                 self.tip.show();
             }
             
@@ -514,7 +528,7 @@ FormComponent = Class.extend({
         // Hide a tip
         this.component.bind('formComponent:hideTip', function(event) {
             // Make sure the tip exists
-            if(self.tip && typeof(self.tip) == 'object') {
+            if(self.tip && typeof(self.tip) === 'object') {
                 self.tip.hide();
             }
 
@@ -540,12 +554,12 @@ FormComponent = Class.extend({
         this.component.find('.tipErrorUl').remove();
 
         // Handle tip display
-        if(this.tip && typeof(this.tip) == 'object') {
+        if(this.tip && typeof(this.tip) === 'object') {
             // Update the tip content
             this.tip.update(this.tipDiv.html());
 
             // Hide the tip if the tip is empty
-            if($.trim(this.tipDiv.find('.tipContent').html()) == ''){
+            if($.trim(this.tipDiv.find('.tipContent').html()) === ''){
                 this.tipDiv.hide();
             }
         }
@@ -562,6 +576,7 @@ FormComponent = Class.extend({
 
     validate: function(silent) {
         //console.log('validating a component Bi!', this.parentFormSection.parentFormPage.id, this.id);
+        var validation, silentValidationPassed;
         // Handle dependencies
         if(this.disabledByDependency || this.parentFormSection.disabledByDependency) {
             return null;
@@ -572,7 +587,7 @@ FormComponent = Class.extend({
             return true;
         }
         if(silent){
-            var silentValidationPassed = true;
+            silentValidationPassed = true;
         }
 
         var self = this;
@@ -584,13 +599,13 @@ FormComponent = Class.extend({
         }
 
         $.each(this.options.validationOptions, function(validationType, validationOptions){
-            validationOptions['value'] = value;
-            if(self.validationFunctions[validationType] != undefined) {
-                var validation = self.validationFunctions[validationType](validationOptions);    
+            validationOptions.value = value;
+            if(self.validationFunctions[validationType] !== undefined) {
+                validation = self.validationFunctions[validationType](validationOptions);    
             }
             else {
-                var errorString = validationType + ' is not a valid validation. for '+self.id+' please check your source'
-                if(typeof window['console'] != undefined){ 
+                var errorString = validationType + ' is not a valid validation. for '+self.id+' please check your source';
+                if(typeof window.console !== undefined){ 
                     console.log(errorString); 
                 }
                 else {
@@ -598,7 +613,7 @@ FormComponent = Class.extend({
                 }
             }
             
-            if(validation == 'success') {
+            if(validation === 'success') {
                 if(validationType.match('required')){
                     self.requiredCompleted = true;
                 }
@@ -607,7 +622,7 @@ FormComponent = Class.extend({
             else {
                 if(validationType.match('required')){
                     self.requiredCompleted = false;
-                    if(self.parentFormSection.parentFormPage.form.options.pageNavigator != false){
+                    if(self.parentFormSection.parentFormPage.form.options.pageNavigator !== false){
                         var pageIndex = $.inArray(self.parentFormSection.parentFormPage.id, self.parentFormSection.parentFormPage.form.formPageIdArray);
                         $('#navigatePage'+(pageIndex + 1)).addClass('formPageNavigatorLinkWarning');
                     }
@@ -639,14 +654,14 @@ FormComponent = Class.extend({
         });
 
         // If there are errors
-        if(errorMessageArray != null && errorMessageArray.length > 0) {
+        if(errorMessageArray !== null && errorMessageArray.length > 0) {
             // If there are instances
-            if(this.instanceArray.length != 1) {
+            if(this.instanceArray.length !== 1) {
                 // Go through each of the instances and assign the error messages
                 $.each(this.instanceArray, function(instanceKey, instance) {
                     if(!Utility.empty(errorMessageArray[instanceKey])){
                         $.each(errorMessageArray[instanceKey], function(errorMessageArrayIndex, errorMessage){
-                            if(errorMessage != '') {
+                            if(errorMessage !== '') {
                                 instance.errorMessageArray.push(errorMessage);
                             }
                         });
@@ -674,7 +689,7 @@ FormComponent = Class.extend({
         this.component.addClass('formComponentValidationFailed');
 
         // Add a tip div and tip neccesary
-        if(this.tipDiv.length == 0) {
+        if(this.tipDiv.length === 0) {
             this.createTipDiv();
         }
 
@@ -712,7 +727,7 @@ FormComponent = Class.extend({
         var self = this;
         var animationOptions = {};
 
-        if(this.options.componentChangedOptions != null && this.options.componentChangedOptions.dependency != undefined && this.options.componentChangedOptions.dependency == true){
+        if(this.options.componentChangedOptions !== null && this.options.componentChangedOptions.dependency !== undefined && this.options.componentChangedOptions.dependency === true){
             this.component.trigger('formComponent:changed', this);
         }
 
@@ -728,7 +743,9 @@ FormComponent = Class.extend({
             if(self.parentFormSection.parentFormPage.form.initializing) {
                 if(!disable && addButton.is(':hidden')){
                     addButton.show();
-                    self.parentFormSection.parentFormPage.form.adjustHeight({adjustHeightDuration:0});
+                    self.parentFormSection.parentFormPage.form.adjustHeight({
+                        adjustHeightDuration:0
+                    });
                 }
             }
             elementsToDisable = elementsToDisable.add(addButton);
@@ -742,7 +759,7 @@ FormComponent = Class.extend({
                 hideDuration : 0,
                 hideEffect: 'none'
 
-            }
+            };
         }
         else if(this.options.dependencyOptions.animationOptions !== undefined){
             animationOptions = $.extend(animationOptions, this.parentFormSection.parentFormPage.form.options.animationOptions.dependency, this.options.dependencyOptions.animationOptions);
@@ -759,12 +776,16 @@ FormComponent = Class.extend({
                 this.clearValidation();
 
                 // Hide the component
-                if(this.options.dependencyOptions.display == 'hide') {
+                if(this.options.dependencyOptions.display === 'hide') {
                     //console.log('hiding component ', this.id)
-                    if(animationOptions.hideEffect == 'none' || animationOptions.hideDuration === 0){
+                    if(animationOptions.hideEffect === 'none' || animationOptions.hideDuration === 0){
                         //console.log('hiding component ', elementsToDisable, animationOptions.hideDuration);
                         //
-                        (animationOptions.hideDuration === 0) ? elementsToDisable.hide() : elementsToDisable.hide(animationOptions.hideDuration);
+                        if (animationOptions.hideDuration === 0) { 
+                            elementsToDisable.hide(); 
+                        } else {
+                            elementsToDisable.hide(animationOptions.hideDuration); 
+                        } 
                         //elementsToDisable.hide(animationOptions.hideDuration);
                         
                         self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
@@ -792,9 +813,9 @@ FormComponent = Class.extend({
             // Show or unlock the component
             else {
                 // Show the component
-                if(this.options.dependencyOptions.display == 'hide') {
+                if(this.options.dependencyOptions.display === 'hide') {
                     //console.log('showing component')
-                    if(animationOptions.appearEffect == 'none' || animationOptions.apearDuration === 0){
+                    if(animationOptions.appearEffect === 'none' || animationOptions.apearDuration === 0){
                         
                         elementsToDisable.show();
                         self.parentFormSection.parentFormPage.form.adjustHeight(animationOptions);
@@ -827,7 +848,7 @@ FormComponent = Class.extend({
             //console.log(eval(self.options.dependencyOptions.jsFunction));
             var disable = !(eval(self.options.dependencyOptions.jsFunction));
             this.disableByDependency(disable);
-            /*
+        /*
             if(disable) {
                 console.log('disabled ', this.id);
             }

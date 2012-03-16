@@ -29,10 +29,11 @@ var CropSlider = Class.extend({
         this.clicked = false;
         
         this.originalCss = { 
-            backgroundPosition: $(this.dragDiv).css('background-position') ? $(this.dragDiv).css('background-position') : '',
-            backgroundSize: $(this.dragDiv).css('background-size') ? $(this.dragDiv).css('background-size') : 'auto',
-            background: $(this.dragDiv).css('background') ? $(this.dragDiv).css('background') : ''
-        }
+            backgroundPosition: $(this.dragDiv).css('background-position') || '',
+            backgroundSize: $(this.dragDiv).css('background-size') || 'auto',
+            background: $(this.dragDiv).css('background') || ''
+        };
+        
         this.backgroundImage.hide();
         $(this.dragDiv).append(this.backgroundImage);
         
@@ -52,7 +53,7 @@ var CropSlider = Class.extend({
     },
     crossHairCursor: function() {
         if(this.options.notifyCrossHairUrl === false){
-            return
+            return;
         }
         var self = this;
         $(this.dragDiv).css({'cursor': 'move'});
@@ -86,11 +87,10 @@ var CropSlider = Class.extend({
     },
     scaleBackgroundImage: function() {
         //Can't scale a square background image.
-        if (this.imgHeight == this.imgWidth && this.options.cropSquareImage) {
+        if (this.imgHeight === this.imgWidth && this.options.cropSquareImage) {
             return;
         }
-        if(this.imgHeight > this.imgWidth)
-        {
+        if (this.imgHeight > this.imgWidth) {
             //imgHeight is bigger, scale width to match then adjust height
             this.aspectRatio = $(this.dragDiv).width() / this.imgWidth;
         } else {

@@ -139,8 +139,9 @@ class FormComponentMultipleChoice extends FormComponent {
             'value' => $multipleChoiceValue,
             'class' => $this->multipleChoiceClass,
             'style' => 'display: inline;',
+            //'checked' => ($multipleChoiceChecked) ? 'checked' : null
         ));
-        if($multipleChoiceChecked == 'checked') {
+        if($multipleChoiceChecked) {
             $input->attr('checked', 'checked');
         }
         if($multipleChoiceDisabled) {
