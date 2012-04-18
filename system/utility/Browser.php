@@ -85,6 +85,7 @@ Class Browser {
 
     public static function getBrowser() {
         self::setAgent();
+        $browser = self::BROWSER_UNKNOWN;
         if (stripos(self::$agent, 'blackberry') !== false) {
             $browser = self::BROWSER_BLACKBERRY;
         } else if (stripos(self::$agent, 'aol') !== false) {
@@ -138,6 +139,7 @@ Class Browser {
     }
 
     public static function isMobile() {
+        self::setAgent();
         if (stripos(self::$agent, 'blackberry') !== false) {
             return true;
         } else if (stripos(self::$agent, 'slurp') !== false) {
@@ -158,6 +160,7 @@ Class Browser {
     }
 
     public static function getVersion() {
+        $version = self::VERSION_UNKNOWN;
         if (stripos(self::$agent, 'blackberry') !== false) {
             $version = explode("/", stristr(self::$agent, "BlackBerry"));
             $version = explode(' ', $version[1]);
@@ -279,6 +282,7 @@ Class Browser {
     }
 
     public static function getPlatform() {
+        self::setAgent();
         if (stripos(self::$agent, 'windows') !== false) {
             return self::PLATFORM_WINDOWS;
         } else if (stripos(self::$agent, 'iPad') !== false) {

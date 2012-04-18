@@ -2,7 +2,8 @@ var ScrollableArea = Class.extend({
     initialize: function(scrollableArea, options) {
         // Update the options object
         this.options = $.extend(true, {
-            'onlyShowScrollerOnHover': true
+            'onlyShowScrollerOnHover': true,
+            'onscroll': false,
         }, options || {});
 
         this.scrollableArea = $(scrollableArea).addClass('scrollableArea');
@@ -48,8 +49,15 @@ var ScrollableArea = Class.extend({
                 'height': self.scrollableArea.outerHeight(),
                 'width': self.scrollableArea.outerWidth() * 1.5 // Make room for the native y scroller
             })
-            .append(this.scrollableAreaContent)
-        ;
+            .append(this.scrollableAreaContent);
+
+        if (this.options.onscroll) { 
+            this.scrollableAreaViewport.bind('scroll', function(event){ 
+                if(self.scrollableAreaScroller.data('mouseOver') === true){
+                    self.options.onscroll(event); 
+                } 
+            });
+        }
         
         // Create the track for the scroller
         this.scrollableAreaTrack = $('<div class="scrollableAreaTrack" />').css({
@@ -116,11 +124,14 @@ var ScrollableArea = Class.extend({
                 },
                 function(event) {
                     self.scrollableAreaScroller.data('mouseOver', false);
-                    if(self.scrollableAreaScroller.data('dragging') == undefined || self.scrollableAreaScroller.data('dragging') === false) {
+                    if(self.scrollableAreaScroller.data('dragging') === undefined || self.scrollableAreaScroller.data('dragging') === false) {
                         self.scrollableAreaTrack.delay(750).fadeOut(250);
                     }
                 }
             );
+        } else {
+            console.log('hurtful')
+            this.scrollableAreaTrack.show();
         }
         
         // Update the scroll when the content is resized
@@ -201,7 +212,7 @@ var ScrollableArea = Class.extend({
         var scrollableAreaScrollerHeight = this.scrollableAreaViewport.outerHeight() / this.scrollableAreaContent.outerHeight() * this.scrollableAreaViewport.outerHeight();
         if(!self.scrollableAreaTrack.is(':visible') && (scrollableAreaScrollerHeight < this.scrollableAreaViewport.outerHeight())) {
             self.scrollableAreaTrack.fadeIn(150, function(){
-                console.log(self.scrollableAreaScroller.data('dragging'));
+                //console.log(self.scrollableAreaScroller.data('dragging'));
                 if(self.scrollableAreaScroller.data('dragging') === undefined || self.scrollableAreaScroller.data('dragging') === false) {
                     self.scrollableAreaTrack.delay(750).fadeOut(250);
                 }
@@ -210,7 +221,7 @@ var ScrollableArea = Class.extend({
             self.scrollableAreaTrack.clearQueue().stop().css({
                 'opacity': 1
             }).delay(750).fadeOut(250);
-        } else {
+        } else if(self.scrollableAreaScroller.data('mouseOver') == false){
             self.scrollableAreaTrack.clearQueue().stop().delay(750).fadeOut(250);
         }
     },
