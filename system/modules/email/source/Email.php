@@ -1140,56 +1140,20 @@ class Email {
      * @return	str
      */
     function prepareQEncoding($str, $from = false) {
-        $str = str_replace(array("\r", "\n"), array('', ''), $str);
+        
+        $str = str_replace(" ", "_", trim($str));
+        // We need to delete "=\r\n" produced by imap_8bit() and replace '?'
+        $str = str_replace("?", "=3F", str_replace("=\r\n", "", quoted_printable_encode($str)));
 
-        // Line length must not exceed 76 characters, so we adjust for
-        // a space, 7 extra characters =??Q??=, and the charset that we will add to each line
-        $limit = 75 - 7 - strlen($this->characterSet);
-
-        // these special characters must be converted too
-        $convert = array('_', '=', '?');
-
-        if($from === true) {
-            $convert[] = ',';
-            $convert[] = ';';
-        }
-
-        $output = '';
-        $temp = '';
-
-        for($i = 0, $length = strlen($str); $i < $length; $i++) {
-            // Grab the next character
-            $char = substr($str, $i, 1);
-            $ascii = ord($char);
-
-            // convert ALL non-printable ASCII characters and our specials
-            if($ascii < 32 OR $ascii > 126 OR in_array($char, $convert)) {
-                $char = '='.dechex($ascii);
-            }
-
-            // handle regular spaces a bit more compactly than =20
-            if($ascii == 32) {
-                $char = '_';
-            }
-
-            // If we're at the character limit, add the line to the output,
-            // reset our temp variable, and keep on chuggin'
-            if((strlen($temp) + strlen($char)) >= $limit) {
-                $output .= $temp.$this->crlf;
-                $temp = '';
-            }
-
-            // Add the character to our temporary line
-            $temp .= $char;
-        }
-
-        $str = $output.$temp;
-
-        // wrap each line with the shebang, charset, and transfer encoding
-        // the preceding space on successive lines is required for header "folding"
-        $str = trim(preg_replace('/^(.*)$/m', ' =?'.$this->characterSet.'?Q?$1?=', $str));
-
-        return $str;
+        // Now we split by \r\n - i'm not sure about how many chars (header name counts or not?)
+        $str = chunk_split($str, 73);
+        // We also have to remove last unneeded \r\n :
+        $str = substr($str, 0, strlen($str) - 2);
+        // replace newlines with encoding text "=?UTF ..."
+        $str = str_replace("\r\n", "?=  =?" . $this->characterSet  . "?Q?", $str);
+        
+        return '=?' . $this->characterSet . '?Q?' . $str . '?=';
+     
     }
 
     // --------------------------------------------------------------------
