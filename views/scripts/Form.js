@@ -1240,7 +1240,7 @@ submitForm: function(event) {
     formClone.append(formView);
     var formViewData = $('<input type="hidden" name="viewData" value="'+$('#'+this.id+'-viewData').val()+'" />');
     formClone.append(formViewData);
-    var formData = $('<input type="hidden" name="formData" />').attr('value', encodeURI(Json.encode(this.getData()))); // Set all non-file values in one form object
+    var formData = $('<input type="hidden" name="formData" />').attr('value', encodeURIComponent(Json.encode(this.getData()))); // Set all non-file values in one form object
     formClone.append(formData);
         
     // Add any file components for submission
