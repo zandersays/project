@@ -901,7 +901,7 @@ scrollToPage: function(formPageId, options) {
                 self.control.find('.formScrollToNotification').html(currentFormPage.options.onScrollAway.notificationHtml);
             }
             else {
-                self.control.append('<li class="formScrollToNotification">'+currentFormPage.options.onScrollAway.notificationHtml+'<li>');
+                self.control.append('<li class="formScrollToNotification">'+currentFormPage.options.onScrollAway.notificationHtml+'</li>');
             }   
         }
         var onScrollAwayOnBefore = currentFormPage.options.onScrollAway.onBefore(direction, formPageId);

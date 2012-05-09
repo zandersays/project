@@ -39,8 +39,14 @@ class ApisModule extends Module {
                 if($api['status'] == 'enabled') {
                     // Try to include the API if a file exists for it (this is a Project convention)
                     $potentialClassFile = Project::getInstancePath().'controllers/apis/'.String::stripSpaces(String::camelCaseToTitle($apiName.'Api.php'));
-                    if(File::exists($potentialClassFile)) {
-                        Project::requireOnce($potentialClassFile);
+                    $file = File::exists($potentialClassFile, false);
+                    if($file) {
+                        if(Number::isInteger($file)) {
+                            Project::requireOnce($potentialClassFile);
+                        }
+                        else {
+                            Project::requireOnce($file);    
+                        }
                     }
                 
                     // Include the explicit API files
