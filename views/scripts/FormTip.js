@@ -231,6 +231,7 @@
                         var elemPos = elem.position();
                         var elemWidth = elem.outerWidth();
                         var elemHeight = elem.outerHeight();
+                        
                         var posX = '';
                         var posY = '';
                         switch(conf.position)
@@ -266,6 +267,7 @@
                                 posY = elemPos.top;
                                 break;
                         };
+                        
                     };
                 }
                 else

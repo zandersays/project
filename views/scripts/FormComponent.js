@@ -367,8 +367,8 @@ FormComponent = Class.extend({
                 //if(this.instanceArray.length == this.options.instancesAllowed && this.options.instancesAllowed !== 0) {
                 addButton.hide();
             }
-
-            if(this.options.dependencyOptions !== undefined){
+            
+            if(this.options.dependencyOptions !== undefined && this.options.dependencyOptions !== null){
                 var objectTop = parent.parentFormSection.parentFormPage.form;
                 var dependentOnComponent = objectTop.select(this.options.dependencyOptions.dependentOn);
                 dependentOnComponent.component.find(':text, textarea').bind('keyup', function(event) {
